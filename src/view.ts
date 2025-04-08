@@ -23,8 +23,9 @@ export class TagFoldersView extends ItemView {
   }
 
   async onOpen() {
-    const container = this.containerEl.children[1]
+    const container = this.containerEl.children[1] as HTMLElement
     container.className = 'nav-files-container'
+    container.style.overflowX = 'scroll'
 
     const root: TagFolder = {
       files: [],
@@ -50,11 +51,11 @@ export class TagFoldersView extends ItemView {
           let files = get(root, `${rootObjPath}.files`) as unknown as (string[] | null)
                 ?? []
 
-          set(root, `${rootObjPath}.files`, [...files, file.path])
+          set(root, `${rootObjPath}.files`, [...files, file])
         })
       } else {
         // untagged files
-        root.files = [...root.files, file.path]
+        root.files = [...root.files, file]
       }
     })
 

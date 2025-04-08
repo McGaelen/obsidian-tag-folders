@@ -10,12 +10,10 @@
 
 <div class={isSubTag ? 'tree-item nav-folder' : ''}>
   {#if name}
-    <div class="tree-item-self nav-folder-title is-clickable mod-collapsible">
-      {name}
-    </div>
+    <div class="item">{name}</div>
   {/if}
 
-  <div class="tree-item-children nav-folder-children">
+  <div style="padding-inline-start: {isSubTag ? '20px' : '0px'}">
     {#if tagFolder.subTags}
       {#each Object.entries(tagFolder.subTags) as [tagName, subTagFolder]}
         <Self name={tagName} tagFolder={subTagFolder} isSubTag />
@@ -23,14 +21,27 @@
     {/if}
 
     {#each tagFolder.files as file}
-      <div class="tree-item nav-file">
-        <div
-          class="tree-item-self nav-file-title tappable is-clickable"
-          style="padding-inline-start: {isSubTag ? '20px' : '0px'}"
-        >
-          {file}
-        </div>
-      </div>
+      <div class="item">{file.name}</div>
     {/each}
   </div>
 </div>
+
+<style>
+  .item {
+    white-space: nowrap;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    border-radius: var(--radius-s);
+    cursor: var(--cursor);
+    color: var(--nav-item-color);
+    font-size: var(--nav-item-size);
+    font-weight: var(--nav-item-weight);
+    line-height: var(--line-height-tight);
+  }
+  .item:hover {
+    color: var(--nav-item-color-hover);
+    background-color: var(--nav-item-background-hover);
+    font-weight: var(--nav-item-weight-hover);
+  }
+</style>

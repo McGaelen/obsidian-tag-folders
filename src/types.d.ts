@@ -1,4 +1,8 @@
-interface TagFolder {
-  files: string[]
-  subTags?: Record<string, TagFolder>
+import type { TFile } from 'obsidian'
+
+declare global {
+  interface TagFolder {
+    files: TFile[]
+    subTags?: Record<string, TagFolder>
+  }
 }
