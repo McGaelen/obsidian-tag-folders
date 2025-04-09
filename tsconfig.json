@@ -13,7 +13,11 @@
     "importHelpers": true,
     "isolatedModules": true,
     "strictNullChecks": true,
-    "lib": ["DOM", "ES5", "ES6", "ES7"]
+    "lib": ["DOM", "ES5", "ES6", "ES7"],
+    "paths": {
+      "$lib": ["./src/lib"],
+      "$lib/*": ["./src/lib/*"]
+    },
   },
   "include": ["**/*.ts", "**/*.svelte"]
 }

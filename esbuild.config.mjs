@@ -68,6 +68,7 @@ const context = await esbuild.context({
   treeShaking: true,
   outdir: 'dist',
   minify: prod,
+  conditions: ['browser', 'default', 'import', 'module', 'svelte'],
 })
 
 if (prod) {

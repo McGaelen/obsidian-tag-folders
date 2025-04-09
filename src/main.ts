@@ -9,7 +9,7 @@ import {
   Setting,
   type WorkspaceLeaf,
 } from 'obsidian'
-import { VIEW_TYPE_TAG_FOLDERS, TagFoldersView } from './view'
+import { VIEW_TYPE_TAG_FOLDERS, TagFoldersView } from '$lib/view'
 
 // Remember to rename these classes and interfaces!
 
