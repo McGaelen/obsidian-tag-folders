@@ -8,9 +8,9 @@
   }: { tagFolder: TagFolder; name?: string; isSubTag?: boolean } = $props()
 </script>
 
-<div class={isSubTag ? 'tree-item nav-folder' : ''}>
+<div>
   {#if name}
-    <div class="item">{name}</div>
+    <div class="text-2xl">{name}</div>
   {/if}
 
   <div style="padding-inline-start: {isSubTag ? '20px' : '0px'}">
