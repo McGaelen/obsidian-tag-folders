@@ -1,4 +1,5 @@
 <script lang="ts">
+  import '../styles.css'
   import Self from './TagFolders.svelte'
   // noinspection ES6UnusedImports
   import * as Collapsible from '$lib/shadcn/ui/collapsible'
@@ -50,13 +51,15 @@
 
     {#each tagFolder.files as file}
       <div class="item-container">
-        <Button class="!pl-7 w-full !justify-start">{file.name}</Button>
+        <Button class="!pl-7 w-full !justify-start">
+          {file.name}
+        </Button>
       </div>
     {/each}
   </div>
 {/snippet}
 
-<style>
+<style lang="postcss">
   @reference '../styles.css';
 
   .line-guide {
@@ -71,7 +74,8 @@
     box-shadow: none;
     text-overflow: ellipsis;
     color: var(--nav-item-color);
-    &:hover {
+
+    @variant hover {
       color: var(--nav-item-color-hover);
       background-color: var(--nav-item-background-hover);
       font-weight: var(--nav-item-weight-hover);

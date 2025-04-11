@@ -1,9 +1,6 @@
 import {
   App,
-  Editor,
-  MarkdownView,
   Modal,
-  Notice,
   Plugin,
   PluginSettingTab,
   Setting,
@@ -51,7 +48,8 @@ export default class MyPlugin extends Plugin {
         }
       }
 
-      await workspace.revealLeaf(leaf)
+      // TODO: `leaf` is definitely nullable, i just wanted to get rid of red squigglies for now...
+      await workspace.revealLeaf(leaf!)
     })
 
     // This adds a settings tab so the user can configure various aspects of the plugin
