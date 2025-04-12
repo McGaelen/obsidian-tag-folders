@@ -23,10 +23,14 @@ export default defineConfig({
       name: 'copy-to-obsidian-vault',
       apply: 'build',
       // Use closeBundle hook to ensure outfiles are written to disk before running
-      closeBundle() {
+      closeBundle(error) {
+        // do nothing if the build had an error
+        if (error) return
+
         if (!process.env.DEV_VAULT_DIRECTORY) {
           throw new Error('DEV_VAULT_DIRECTORY is not defined!')
         }
+
         copyFileSync(
           resolve(__dirname, 'manifest.json'),
           `${process.env.DEV_VAULT_DIRECTORY}/.obsidian/plugins/tag-folders/manifest.json`,

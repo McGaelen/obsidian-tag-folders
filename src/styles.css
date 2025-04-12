@@ -79,3 +79,19 @@
         "calt" 1;
   }
 }
+
+@utility file-tree-item {
+  @apply h-[25px] bg-transparent border-0 shadow-none overflow-ellipsis;
+  transition-duration: 0ms;
+  color: var(--nav-item-color);
+
+  @variant hover {
+    color: var(--nav-item-color-hover);
+    background-color: var(--nav-item-background-hover);
+    font-weight: var(--nav-item-weight-hover);
+  }
+}
+
+@utility border-indentation-guide {
+  border-left: var(--nav-indentation-guide-width) solid var(--nav-indentation-guide-color)
+}
