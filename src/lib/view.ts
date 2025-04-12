@@ -1,7 +1,7 @@
 import { type IconName, ItemView, WorkspaceLeaf, getAllTags } from 'obsidian'
 import { get, set } from 'lodash-es'
 import { mount } from 'svelte'
-import TagFolders from '$lib/TagFolders.svelte'
+import Main from '$lib/Main.svelte'
 
 export const VIEW_TYPE_TAG_FOLDERS = 'tag-folders-view'
 
@@ -59,7 +59,7 @@ export class TagFoldersView extends ItemView {
       }
     })
 
-    mount(TagFolders, {
+    mount(Main, {
       target: container,
       props: {
         tagFolder: root,

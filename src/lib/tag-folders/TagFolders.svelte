@@ -1,20 +1,20 @@
 <script lang="ts">
-  import '../styles.css'
+  import '../../styles.css'
   import Self from './TagFolders.svelte'
-  import { Button } from '$lib/shadcn/ui/button'
-  import ExpandableFolder from '$lib/file-tree/ExpandableFolder.svelte'
+  import TreeItemNavFile from '$lib/tree-item/TreeItemNavFile.svelte'
+  import TreeItemNavFolder from '$lib/tree-item/TreeItemNavFolder.svelte'
 
   let {
     tagFolder,
     name,
-    isSubTag,
-  }: { tagFolder: TagFolder; name?: string; isSubTag?: boolean } = $props()
+    depth = 0,
+  }: { tagFolder: TagFolder; name?: string; depth?: number } = $props()
 </script>
 
-{#if isSubTag}
-  <ExpandableFolder folderName={name}>
+{#if depth}
+  <TreeItemNavFolder folderName={name} {depth}>
     {@render childFoldersAndFiles()}
-  </ExpandableFolder>
+  </TreeItemNavFolder>
 {:else}
   <!-- The top level TagFolder shouldn't be in a collapse. -->
   {@render childFoldersAndFiles()}
@@ -24,14 +24,12 @@
   <!-- List all subtags first -->
   {#if tagFolder.subTags}
     {#each Object.entries(tagFolder.subTags) as [tagName, subTagFolder]}
-      <Self name={tagName} tagFolder={subTagFolder} isSubTag />
+      <Self name={tagName} tagFolder={subTagFolder} depth={depth + 1} />
     {/each}
   {/if}
 
   <!-- List the files under this tag -->
   {#each tagFolder.files as file}
-    <Button class="!pl-7 w-full !justify-start !file-tree-item">
-      {file.name}
-    </Button>
+    <TreeItemNavFile itemName={file.name} {depth} />
   {/each}
 {/snippet}
