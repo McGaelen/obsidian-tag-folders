@@ -5,6 +5,8 @@
   let { tagFolder }: { tagFolder: TagFolder } = $props()
 </script>
 
+<div class="h-[42px]"></div>
+
 <NavFilesContainer>
   <TagFolders {tagFolder} />
 </NavFilesContainer>

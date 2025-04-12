@@ -1,17 +1,23 @@
 <script lang="ts">
-  import { ChevronRight } from 'lucide-svelte'
+  import FolderChevron from '$lib/svg/FolderChevron.svelte'
 
   let {
     itemName,
     isFolder,
+    isExpanded,
     depth = 0,
     onclick,
   }: {
     itemName?: string
     isFolder?: boolean
     depth?: number
+    isExpanded?: boolean
     onclick?: () => void
   } = $props()
+
+  // These values control the width of the hover effect, which makes it cover the full width of the view
+  let margin = $derived(-17 * depth)
+  let padding = $derived(17 * depth + 24)
 </script>
 
 <div class={['tree-item', isFolder ? 'nav-folder' : 'nav-file']}>
@@ -22,14 +28,12 @@
       'tree-item-self is-clickable',
       isFolder ? 'nav-folder-title mod-collapsible' : 'nav-file-title tappable',
     ]}
-    style="margin-inline-start: -{25 * depth}px; padding-inline-start: {25 *
-      depth +
-      25}px;"
+    style="margin-inline-start: {margin}px !important; padding-inline-start: {padding}px !important;"
     {onclick}
   >
     {#if isFolder}
       <div class="tree-item-icon collapse-icon">
-        <ChevronRight />
+        <FolderChevron {isExpanded} />
       </div>
     {/if}
     <div

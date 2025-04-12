@@ -12,7 +12,7 @@
 </script>
 
 {#if depth}
-  <TreeItemNavFolder folderName={name} {depth}>
+  <TreeItemNavFolder folderName={name} depth={depth - 1}>
     {@render childFoldersAndFiles()}
   </TreeItemNavFolder>
 {:else}

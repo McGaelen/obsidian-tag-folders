@@ -24,8 +24,7 @@ export class TagFoldersView extends ItemView {
 
   async onOpen() {
     const container = this.containerEl.children[1] as HTMLElement
-    container.className = 'nav-files-container'
-    container.style.overflowX = 'scroll'
+    container.style.padding = '0'
 
     const root: TagFolder = {
       files: [],

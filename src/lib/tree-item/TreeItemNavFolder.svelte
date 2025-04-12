@@ -18,6 +18,7 @@
     <BaseTreeItem
       itemName={folderName}
       isFolder
+      {isExpanded}
       {depth}
       onclick={() => (isExpanded = !isExpanded)}
     />
