@@ -2,7 +2,7 @@ import type { TFile } from 'obsidian'
 
 declare global {
   interface TagFolder {
-    files: TFile[]
+    files?: TFile[]
     subTags?: Record<string, TagFolder>
   }
 }

@@ -14,6 +14,17 @@
     depth = 0,
   }: { tagFolder: TagFolder; name?: string; depth?: number } = $props()
 
+  // prettier-ignore
+  let sortedSubTags: Array<[string, TagFolder]> = $derived(
+    Object.entries(tagFolder.subTags ?? {}).slice().sort(
+        ([tagA], [tagB]) => tagA.localeCompare(tagB),
+    ),
+  )
+
+  let sortedFiles: TFile[] = $derived(
+    tagFolder.files?.slice().sort((a, b) => a.name.localeCompare(b.name)) ?? [],
+  )
+
   function openFile(file: TFile) {
     app.workspace.getLeaf().openFile(file)
   }
@@ -30,14 +41,12 @@
 
 {#snippet childFoldersAndFiles()}
   <!-- List all subtags first -->
-  {#if tagFolder.subTags}
-    {#each Object.entries(tagFolder.subTags) as [tagName, subTagFolder]}
-      <Self name={tagName} tagFolder={subTagFolder} depth={depth + 1} />
-    {/each}
-  {/if}
+  {#each sortedSubTags as [tagName, subTagFolder] (tagName)}
+    <Self name={tagName} tagFolder={subTagFolder} depth={depth + 1} />
+  {/each}
 
   <!-- List the files under this tag -->
-  {#each tagFolder.files as file}
+  {#each sortedFiles as file (file.path)}
     <TreeItemNavFile
       itemName={file.name}
       {depth}

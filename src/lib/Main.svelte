@@ -4,6 +4,7 @@
   import { tagFolderCache } from '$lib/tagFolderCache.svelte'
 </script>
 
+<!-- TODO: someday a toolbar will go here -->
 <div class="h-[42px]"></div>
 
 <NavFilesContainer>
