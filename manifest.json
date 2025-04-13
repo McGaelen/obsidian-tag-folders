@@ -1,11 +1,10 @@
 {
-  "id": "sample-plugin",
-  "name": "Sample Plugin",
-  "version": "1.0.0",
-  "minAppVersion": "0.15.0",
-  "description": "Demonstrates some of the capabilities of the Obsidian API.",
-  "author": "Obsidian",
-  "authorUrl": "https://obsidian.md",
-  "fundingUrl": "https://obsidian.md/pricing",
+  "id": "tag-folders",
+  "name": "Tag Folders",
+  "version": "0.1",
+  "minAppVersion": "1.8.9",
+  "description": "Navigate your vault using tags as folders.",
+  "author": "Gaelen McIntee",
+  "authorUrl": "https://github.com/McGaelen/obsidian-tag-folders",
   "isDesktopOnly": false
 }
