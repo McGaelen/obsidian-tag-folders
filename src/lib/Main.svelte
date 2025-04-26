@@ -2,10 +2,11 @@
   import NavFilesContainer from '$lib/tree-item/NavFilesContainer.svelte'
   import TagFolders from '$lib/tag-folders/TagFolders.svelte'
   import { tagFolderCache } from '$lib/tagFolderCache.svelte'
+  import { ItemView } from 'obsidian'
+  import Toolbar from '$lib/tag-folders/Toolbar.svelte'
 </script>
 
-<!-- TODO: someday a toolbar will go here -->
-<div class="h-[42px]"></div>
+<Toolbar />
 
 <NavFilesContainer>
   <TagFolders tagFolder={tagFolderCache.root} />
