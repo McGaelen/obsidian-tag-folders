@@ -17,12 +17,12 @@ export const tagFolderCache: TagFolderCache = $state({
     this.root = initialRoot
 
     app.vault.getFiles().forEach(file => {
-      if (
-        (!file.name.endsWith('.md') && !file.name.endsWith('.canvas')) ||
-        file.path.includes('excalidraw')
-      ) {
-        return
-      }
+      // if (
+      //   (!file.name.endsWith('.md') && !file.name.endsWith('.canvas')) ||
+      //   file.path.includes('excalidraw')
+      // ) {
+      //   return
+      // }
 
       const cache = app.metadataCache.getFileCache(file)
       if (!cache) return

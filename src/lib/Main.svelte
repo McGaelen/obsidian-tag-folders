@@ -1,5 +1,5 @@
 <script lang="ts">
-  import NavFilesContainer from '$lib/nav/NavFilesContainer.svelte'
+  import NavFilesContainer from '$lib/obsidian/file-tree-list/NavFilesContainer.svelte'
   import TagFolders from '$lib/tag-folders/TagFolders.svelte'
   import { tagFolderCache } from '$lib/tagFolderCache.svelte'
   import { ItemView } from 'obsidian'

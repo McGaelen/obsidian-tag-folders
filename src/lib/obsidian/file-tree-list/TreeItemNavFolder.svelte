@@ -2,7 +2,7 @@
   // noinspection ES6UnusedImports
   import * as Collapsible from '$lib/shadcn/ui/collapsible'
   import type { Snippet } from 'svelte'
-  import BaseTreeItem from '$lib/tree-item/BaseTreeItem.svelte'
+  import BaseTreeItem from '$lib/obsidian/file-tree-list/BaseTreeItem.svelte'
 
   let {
     folderName,

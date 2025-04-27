@@ -1,8 +1,8 @@
 <script lang="ts">
   import '../../styles.css'
   import Self from './TagFolders.svelte'
-  import TreeItemNavFile from '$lib/tree-item/TreeItemNavFile.svelte'
-  import TreeItemNavFolder from '$lib/tree-item/TreeItemNavFolder.svelte'
+  import TreeItemNavFile from '$lib/obsidian/file-tree-list/TreeItemNavFile.svelte'
+  import TreeItemNavFolder from '$lib/obsidian/file-tree-list/TreeItemNavFolder.svelte'
   import { type App, type TFile } from 'obsidian'
   import { getContext } from 'svelte'
 

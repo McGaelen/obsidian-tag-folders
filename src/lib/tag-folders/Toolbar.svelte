@@ -1,7 +1,7 @@
 <script lang="ts">
-  import NavHeader from '$lib/nav/NavHeader.svelte'
-  import NavButtonsContainer from '$lib/nav/NavButtonsContainer.svelte'
-  import NavActionButton from '$lib/nav/NavActionButton.svelte'
+  import NavHeader from '$lib/obsidian/file-tree-header/NavHeader.svelte'
+  import NavButtonsContainer from '$lib/obsidian/file-tree-header/NavButtonsContainer.svelte'
+  import NavActionButton from '$lib/obsidian/file-tree-header/NavActionButton.svelte'
   import { Edit } from 'lucide-svelte'
   import { getContext } from 'svelte'
   import type { App } from 'obsidian'

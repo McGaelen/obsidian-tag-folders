@@ -1,5 +1,6 @@
 <script lang="ts">
   import FolderChevron from '$lib/svg/FolderChevron.svelte'
+  import BaseTreeItemInner from '$lib/obsidian/file-tree-list/BaseTreeItemInner.svelte'
 
   let {
     itemName,
@@ -36,13 +37,7 @@
         <FolderChevron {isExpanded} />
       </div>
     {/if}
-    <div
-      class={[
-        'tree-item-inner',
-        isFolder ? 'nav-folder-title-content' : 'nav-file-title-content',
-      ]}
-    >
-      {itemName}
-    </div>
+
+    <BaseTreeItemInner {itemName} {isFolder} />
   </div>
 </div>
