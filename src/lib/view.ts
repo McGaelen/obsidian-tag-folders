@@ -23,8 +23,9 @@ export class TagFoldersView extends ItemView {
   }
 
   async onOpen() {
-    const container = this.containerEl.children[1] as HTMLElement
-    container.style.padding = '0'
+    const container = this.containerEl as HTMLElement
+    // clear out div elements that obsidian automatically adds to the containerEl...
+    container.replaceChildren()
 
     const context: Map<any, any> = new Map()
     context.set('app', this.app)

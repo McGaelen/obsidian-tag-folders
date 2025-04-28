@@ -4,7 +4,7 @@
   import NavActionButton from '$lib/obsidian/file-tree-header/NavActionButton.svelte'
   import { Edit } from 'lucide-svelte'
   import { getContext } from 'svelte'
-  import type { App } from 'obsidian'
+  import { type App, Platform } from 'obsidian'
 
   const app = getContext<App>('app')
 
@@ -17,7 +17,7 @@
 <NavHeader>
   <NavButtonsContainer>
     <NavActionButton onclick={createFile}>
-      <Edit size={18} />
+      <Edit size={Platform.isMobile ? 24 : 18} />
     </NavActionButton>
   </NavButtonsContainer>
 </NavHeader>
