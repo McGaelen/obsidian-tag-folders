@@ -1,5 +1,4 @@
 <script lang="ts">
-  // noinspection ES6UnusedImports
   import * as Collapsible from '$lib/shadcn/ui/collapsible'
   import type { Snippet } from 'svelte'
   import BaseTreeItem from '$lib/obsidian/file-tree-list/BaseTreeItem.svelte'
@@ -14,15 +13,13 @@
 </script>
 
 <Collapsible.Root bind:open={isExpanded}>
-  <Collapsible.Trigger asChild>
-    <BaseTreeItem
-      itemName={folderName}
-      isFolder
-      {isExpanded}
-      {depth}
-      onclick={() => (isExpanded = !isExpanded)}
-    />
-  </Collapsible.Trigger>
+  <BaseTreeItem
+    itemName={folderName}
+    isFolder
+    {isExpanded}
+    {depth}
+    onclick={() => (isExpanded = !isExpanded)}
+  />
   <Collapsible.Content>
     <div class="tree-item-children nav-folder-children">
       <div style="width: 310px; height: 0.1px; margin-bottom: 0px;"></div>
