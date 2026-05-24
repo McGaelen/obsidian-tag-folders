@@ -1,9 +1,5 @@
 import {
-  App,
-  Modal,
   Plugin,
-  PluginSettingTab,
-  Setting,
   type WorkspaceLeaf,
 } from 'obsidian'
 import { VIEW_TYPE_TAG_FOLDERS, TagFoldersView } from '$lib/view'
@@ -26,37 +22,17 @@ export default class MyPlugin extends Plugin {
 
     this.registerView(VIEW_TYPE_TAG_FOLDERS, leaf => new TagFoldersView(leaf))
 
-    this.addRibbonIcon('dice', 'Sample Plugin', async (_: MouseEvent) => {
-      const { workspace } = this.app
-
-      let leaf: WorkspaceLeaf | null
-      const leaves = workspace.getLeavesOfType(VIEW_TYPE_TAG_FOLDERS)
-
-      if (leaves.length > 0) {
-        // A leaf with our view already exists, use that
-        leaf = leaves[0]
-      } else {
-        // Our view could not be found in the workspace, create a new leaf
-        // in the right sidebar for it
-        leaf = workspace.getLeftLeaf(false)
-        if (leaf) {
-          await leaf.setViewState({
-            type: VIEW_TYPE_TAG_FOLDERS,
-            active: true,
-          })
-          // "Reveal" the leaf in case it is in a collapsed sidebar
-        }
-      }
-
-      // TODO: `leaf` is definitely nullable, i just wanted to get rid of red squigglies for now...
-      await workspace.revealLeaf(leaf!)
-    })
+    // TODO: this should probably not happen every single time if the user deliberately closed it.
+    // TODO: add some kind of state to remember if it's closed or not, then add a command to open it back up from the palette.
+    this.app.workspace.onLayoutReady(() => this.#openTagsView())
 
     // This adds a settings tab so the user can configure various aspects of the plugin
     // this.addSettingTab(new SampleSettingTab(this.app, this));
   }
 
-  onunload() {}
+  onunload() {
+    this.app.workspace.detachLeavesOfType(VIEW_TYPE_TAG_FOLDERS)
+  }
 
   async loadSettings() {
     this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData())
@@ -65,48 +41,68 @@ export default class MyPlugin extends Plugin {
   async saveSettings() {
     await this.saveData(this.settings)
   }
-}
 
-class SampleModal extends Modal {
-  constructor(app: App) {
-    super(app)
-  }
+  async #openTagsView() {
+    let leaf: WorkspaceLeaf | null
+    const leaves = this.app.workspace.getLeavesOfType(VIEW_TYPE_TAG_FOLDERS)
 
-  onOpen() {
-    const { contentEl } = this
-    contentEl.setText('Woah!')
-  }
-
-  onClose() {
-    const { contentEl } = this
-    contentEl.empty()
-  }
-}
-
-class SampleSettingTab extends PluginSettingTab {
-  plugin: MyPlugin
-
-  constructor(app: App, plugin: MyPlugin) {
-    super(app, plugin)
-    this.plugin = plugin
-  }
-
-  display(): void {
-    const { containerEl } = this
-
-    containerEl.empty()
-
-    new Setting(containerEl)
-      .setName('Setting #1')
-      .setDesc("It's a secret")
-      .addText(text =>
-        text
-          .setPlaceholder('Enter your secret')
-          .setValue(this.plugin.settings.mySetting)
-          .onChange(async value => {
-            this.plugin.settings.mySetting = value
-            await this.plugin.saveSettings()
-          }),
-      )
+    if (!leaves.length) {
+      // Our view could not be found in the workspace, create a new leaf inside the left sidebar and show it.
+      // this.app.workspace.getLeftLeaf(true)
+      this.app.workspace.getLeaf('split', 'vertical')
+      leaf = this.app.workspace.getLeftLeaf(false)
+      if (leaf) {
+        await leaf.setViewState({
+          type: VIEW_TYPE_TAG_FOLDERS,
+          active: true,
+        })
+        // "Reveal" the leaf in case it is in a collapsed sidebar
+        await this.app.workspace.revealLeaf(leaf)
+      }
+    }
   }
 }
+
+// class SampleModal extends Modal {
+//   constructor(app: App) {
+//     super(app)
+//   }
+//
+//   onOpen() {
+//     const { contentEl } = this
+//     contentEl.setText('Woah!')
+//   }
+//
+//   onClose() {
+//     const { contentEl } = this
+//     contentEl.empty()
+//   }
+// }
+//
+// class SampleSettingTab extends PluginSettingTab {
+//   plugin: MyPlugin
+//
+//   constructor(app: App, plugin: MyPlugin) {
+//     super(app, plugin)
+//     this.plugin = plugin
+//   }
+//
+//   display(): void {
+//     const { containerEl } = this
+//
+//     containerEl.empty()
+//
+//     new Setting(containerEl)
+//       .setName('Setting #1')
+//       .setDesc("It's a secret")
+//       .addText(text =>
+//         text
+//           .setPlaceholder('Enter your secret')
+//           .setValue(this.plugin.settings.mySetting)
+//           .onChange(async value => {
+//             this.plugin.settings.mySetting = value
+//             await this.plugin.saveSettings()
+//           }),
+//       )
+//   }
+// }
