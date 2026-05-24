@@ -1,6 +1,8 @@
 <script lang="ts">
   import FolderChevron from '$lib/svg/FolderChevron.svelte'
   import BaseTreeItemInner from '$lib/obsidian/file-tree-list/BaseTreeItemInner.svelte'
+  import { CollapsibleTrigger } from '$lib/shadcn/ui/collapsible'
+  import { Hash } from '@lucide/svelte'
 
   let {
     itemName,
@@ -26,16 +28,26 @@
   <!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_static_element_interactions -->
   <div
     class={[
-      'tree-item-self is-clickable',
+      'tree-item-self is-clickable items-center!',
       isFolder ? 'nav-folder-title mod-collapsible' : 'nav-file-title tappable',
     ]}
     style="margin-inline-start: {margin}px !important; padding-inline-start: {padding}px !important;"
-    {onclick}
+    onclick={isFolder ? undefined : onclick}
   >
     {#if isFolder}
-      <div class="tree-item-icon collapse-icon">
-        <FolderChevron {isExpanded} />
-      </div>
+      <CollapsibleTrigger>
+        {#snippet child()}
+          <!-- Obsidian is clearly using click handlers on a <div>, so we do it as well to match. -->
+          <!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_static_element_interactions -->
+          <div
+            class="tree-item-icon collapse-icon"
+            onclick={isFolder ? onclick : undefined}
+          >
+            <FolderChevron {isExpanded} />
+          </div>
+        {/snippet}
+      </CollapsibleTrigger>
+      <Hash size={16} class="text-(--nav-tag-color) mr-0.5" />
     {/if}
 
     <BaseTreeItemInner {itemName} {isFolder} />
