@@ -48,8 +48,6 @@ export default class MyPlugin extends Plugin {
 
     if (!leaves.length) {
       // Our view could not be found in the workspace, create a new leaf inside the left sidebar and show it.
-      // this.app.workspace.getLeftLeaf(true)
-      this.app.workspace.getLeaf('split', 'vertical')
       leaf = this.app.workspace.getLeftLeaf(false)
       if (leaf) {
         await leaf.setViewState({
