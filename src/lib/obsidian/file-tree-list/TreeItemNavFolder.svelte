@@ -6,13 +6,14 @@
   let {
     folderName,
     depth = 0,
+    onselect,
     children,
-  }: { folderName?: string; depth?: number; children?: Snippet } = $props()
+  }: { folderName?: string; depth?: number; onselect?: () =>void, children?: Snippet } = $props()
 
   let isExpanded = $state(false)
 </script>
 
-<Collapsible.Root bind:open={isExpanded}>
+<Collapsible.Root bind:open={isExpanded} onclick={onselect}>
   <BaseTreeItem
     itemName={folderName}
     isFolder

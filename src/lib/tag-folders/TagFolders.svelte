@@ -5,14 +5,22 @@
   import TreeItemNavFolder from '$lib/obsidian/file-tree-list/TreeItemNavFolder.svelte'
   import { type App, type TFile } from 'obsidian'
   import { getContext } from 'svelte'
+  import type { TagFolder } from '$lib/tagFolderCache.svelte'
+  import { selectedTag } from '$lib/selectedTag.svelte'
 
   const app = getContext<App>('app')
 
   let {
     tagFolder,
     name,
+    parentName = '',
     depth = 0,
-  }: { tagFolder: TagFolder; name?: string; depth?: number } = $props()
+  }: {
+    tagFolder: TagFolder
+    name?: string
+    parentName?: string
+    depth?: number
+  } = $props()
 
   // prettier-ignore
   let sortedSubTags: Array<[string, TagFolder]> = $derived(
@@ -31,7 +39,9 @@
 </script>
 
 {#if depth}
-  <TreeItemNavFolder folderName={name} depth={depth - 1}>
+  <TreeItemNavFolder folderName={name} depth={depth - 1} onselect={() => {
+    selectedTag.current = {tagPath: parentName, files: sortedFiles}
+  }}>
     {@render childFoldersAndFiles()}
   </TreeItemNavFolder>
 {:else}
@@ -42,7 +52,12 @@
 {#snippet childFoldersAndFiles()}
   <!-- List all subtags first -->
   {#each sortedSubTags as [tagName, subTagFolder] (tagName)}
-    <Self name={tagName} tagFolder={subTagFolder} depth={depth + 1} />
+    <Self
+      name={tagName}
+      tagFolder={subTagFolder}
+      parentName="{parentName ? `${parentName}/` : ''}{name}"
+      depth={depth + 1}
+    />
   {/each}
 
   <!-- List the files under this tag -->

@@ -1,20 +1,27 @@
-import { type App, getAllTags } from 'obsidian'
+import { type App, getAllTags, type TFile } from 'obsidian'
 import { get, set } from 'lodash-es'
 
-export interface TagFolderCache {
-  root: TagFolder
-  rebuild(app: App): void
+export interface TagFolder {
+  files?: TFile[]
+  subTags?: Record<string, TagFolder>
 }
 
 const initialRoot: TagFolder = {
   files: [],
 }
 
-export const tagFolderCache: TagFolderCache = $state({
-  root: initialRoot,
+let root: TagFolder = $state(initialRoot)
+
+export const tagFolderCache = {
+  get current() {
+    return root
+  },
+  set current(val) {
+    root = val
+  },
 
   rebuild(app: App) {
-    this.root = initialRoot
+    root = initialRoot
 
     app.vault.getFiles().forEach(file => {
       // if (
@@ -30,8 +37,8 @@ export const tagFolderCache: TagFolderCache = $state({
       const dedupedTags = new Set(getAllTags(cache))
 
       if (dedupedTags.size !== 0) {
-        dedupedTags.forEach(tag => {
-          const tagPathAry = tag.slice(1).split('/')
+        dedupedTags.forEach(fullTag => {
+          const tagPathAry = fullTag.slice(1).split('/')
 
           const rootObjPath = tagPathAry.reduce(
             (acc, tag, i) =>
@@ -40,15 +47,15 @@ export const tagFolderCache: TagFolderCache = $state({
           )
 
           // prettier-ignore
-          let files = get(this.root, `${rootObjPath}.files`) as unknown as (string[] | null)
+          const files = get(root, `${rootObjPath}.files`) as unknown as (string[] | null)
               ?? []
 
-          set(this.root, `${rootObjPath}.files`, [...files, file])
+          set(root, `${rootObjPath}.files`, [...files, file])
         })
       } else {
         // untagged files
-        this.root.files = [...this.root.files, file]
+        root.files = [...(root.files ?? []), file]
       }
     })
   },
-})
+}
