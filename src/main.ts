@@ -1,30 +1,38 @@
+import { Plugin, type WorkspaceLeaf } from 'obsidian'
+import './styles.css'
+import { seedDb } from '$lib/db'
 import {
-  Plugin,
-  type WorkspaceLeaf,
-} from 'obsidian'
-import { VIEW_TYPE_TAG_FOLDERS, TagFoldersView } from '$lib/view'
-
+  TagFoldersView,
+  VIEW_TYPE_TAG_FOLDERS,
+} from './views/tag-folders/TagFoldersView'
 // Remember to rename these classes and interfaces!
 
-interface MyPluginSettings {
-  mySetting: string
-}
-
-const DEFAULT_SETTINGS: MyPluginSettings = {
-  mySetting: 'default',
-}
+// interface MyPluginSettings {
+//   mySetting: string
+// }
+//
+// const DEFAULT_SETTINGS: MyPluginSettings = {
+//   mySetting: 'default',
+// }
 
 export default class MyPlugin extends Plugin {
-  settings: MyPluginSettings
+  // settings: MyPluginSettings
 
   async onload() {
-    await this.loadSettings()
+    // await this.loadSettings()
 
     this.registerView(VIEW_TYPE_TAG_FOLDERS, leaf => new TagFoldersView(leaf))
 
-    // TODO: this should probably not happen every single time if the user deliberately closed it.
-    // TODO: add some kind of state to remember if it's closed or not, then add a command to open it back up from the palette.
-    this.app.workspace.onLayoutReady(() => this.#openTagsView())
+    const onResolved = this.app.metadataCache.on('resolved', () => {
+      this.#setupDb()
+      this.app.metadataCache.offref(onResolved) // run this only once
+    })
+
+    this.app.workspace.onLayoutReady(async () => {
+      // TODO: this should probably not happen every single time if the user deliberately closed it.
+      // TODO: add some kind of state to remember if it's closed or not, then add a command to open it back up from the palette.
+      await this.#ensureTagsListVisible()
+    })
 
     // This adds a settings tab so the user can configure various aspects of the plugin
     // this.addSettingTab(new SampleSettingTab(this.app, this));
@@ -34,15 +42,40 @@ export default class MyPlugin extends Plugin {
     this.app.workspace.detachLeavesOfType(VIEW_TYPE_TAG_FOLDERS)
   }
 
-  async loadSettings() {
-    this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData())
+  // async loadSettings() {
+  //   this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData())
+  // }
+
+  // async saveSettings() {
+  //   await this.saveData(this.settings)
+  // }
+
+  #setupDb() {
+    seedDb(this.app)
+
+    // TODO: these event handlers should be optimized to only update the file provided
+    this.app.vault.on('create', _file => {
+      // console.log('create', _file)
+      seedDb(this.app)
+    })
+    this.app.vault.on('rename', _file => {
+      // console.log('rename', _file)
+      seedDb(this.app)
+    })
+    // We can't use app.value.on('modify'), because we need to wait for obsidian's cache to refresh,
+    // which is how we are able to read tags without manually parsing every file.
+    // Therefore, we subscribe to the metadataCache 'changed' event instead.
+    this.app.metadataCache.on('changed', (_file, _data, _cache) => {
+      // console.log('changed', _file, _data, _cache)
+      seedDb(this.app)
+    })
+    this.app.metadataCache.on('deleted', (_file, _prevCache) => {
+      // console.log('deleted', _file, _prevCache)
+      seedDb(this.app)
+    })
   }
 
-  async saveSettings() {
-    await this.saveData(this.settings)
-  }
-
-  async #openTagsView() {
+  async #ensureTagsListVisible() {
     let leaf: WorkspaceLeaf | null
     const leaves = this.app.workspace.getLeavesOfType(VIEW_TYPE_TAG_FOLDERS)
 

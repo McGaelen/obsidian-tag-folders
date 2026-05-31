@@ -1,13 +1,13 @@
 import type { TFile } from 'obsidian'
 
 interface SelectedTag {
-  tagPath: string,
+  tagPath: string
   files: TFile[]
 }
 
 let selected: SelectedTag = $state({
   tagPath: '',
-  files: []
+  files: [],
 })
 
 export const selectedTag = {
@@ -16,5 +16,5 @@ export const selectedTag = {
   },
   set current(newSelectedTag: SelectedTag) {
     selected = newSelectedTag
-  }
+  },
 }

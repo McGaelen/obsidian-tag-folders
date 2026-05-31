@@ -2,11 +2,13 @@ import 'dotenv/config'
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { defineConfig } from 'vite'
-import builtins from 'builtin-modules'
+import { builtinModules } from 'node:module'
 import process from 'node:process'
 import { svelte } from '@sveltejs/vite-plugin-svelte'
 import tailwindcss from '@tailwindcss/vite'
 import { copyFileSync } from 'node:fs'
+import wasm from 'vite-plugin-wasm'
+// import topLevelAwait from 'vite-plugin-top-level-await'
 
 const prod = !!process.env.PRODUCTION
 if (prod) {
@@ -17,6 +19,8 @@ const __dirname = dirname(fileURLToPath(import.meta.url))
 
 export default defineConfig({
   plugins: [
+    wasm(),
+    // topLevelAwait(),
     tailwindcss(),
     svelte(),
     {
@@ -51,6 +55,7 @@ export default defineConfig({
       $lib: resolve(__dirname, 'src/lib'),
     },
   },
+  assetsInclude: ['**/*.wasm'],
   build: {
     // Using Vite in library mode https://vite.dev/guide/build.html#library-mode
     lib: {
@@ -78,11 +83,11 @@ export default defineConfig({
         '@lezer/common',
         '@lezer/highlight',
         '@lezer/lr',
-        ...builtins,
+        ...builtinModules,
       ],
       treeshake: true,
     },
-    target: 'es2018',
+    target: 'esnext',
     sourcemap: prod ? false : 'inline',
     minify: prod,
   },

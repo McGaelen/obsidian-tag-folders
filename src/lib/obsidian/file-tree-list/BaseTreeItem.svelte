@@ -2,20 +2,22 @@
   import FolderChevron from '$lib/svg/FolderChevron.svelte'
   import BaseTreeItemInner from '$lib/obsidian/file-tree-list/BaseTreeItemInner.svelte'
   import { CollapsibleTrigger } from '$lib/shadcn/ui/collapsible'
-  import { Hash } from '@lucide/svelte'
+  import type { Snippet } from 'svelte'
 
   let {
-    itemName,
     isFolder,
     isExpanded,
     depth = 0,
     onclick,
+    label,
+    navFileTag,
   }: {
-    itemName?: string
     isFolder?: boolean
-    depth?: number
     isExpanded?: boolean
+    depth?: number
     onclick?: () => void
+    label?: Snippet
+    navFileTag?: Snippet
   } = $props()
 
   // These values control the width of the hover effect, which makes it cover the full width of the view
@@ -41,17 +43,19 @@
           <!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_static_element_interactions -->
           <div
             class="tree-item-icon collapse-icon"
-            onclick={isFolder ? (e) => {
-              e.stopPropagation()
-              onclick?.()} : undefined}
+            onclick={isFolder
+              ? e => {
+                  e.stopPropagation()
+                  onclick?.()
+                }
+              : undefined}
           >
             <FolderChevron {isExpanded} />
           </div>
         {/snippet}
       </CollapsibleTrigger>
-      <Hash size={16} class="text-(--nav-tag-color) mr-0.5 min-w-[16px]" />
     {/if}
 
-    <BaseTreeItemInner {itemName} {isFolder} />
+    <BaseTreeItemInner {isFolder} {label} {navFileTag} />
   </div>
 </div>

@@ -1,10 +1,10 @@
 {
-	"id": "tag-folders",
-	"name": "Tag Folders",
-	"version": "0.2",
-	"minAppVersion": "1.8.9",
-	"description": "Navigate your vault using tags as folders.",
-	"author": "Gaelen McIntee",
-	"authorUrl": "https://github.com/McGaelen/obsidian-tag-folders",
-	"isDesktopOnly": false
+  "id": "tag-folders",
+  "name": "Tag Folders",
+  "version": "0.2",
+  "minAppVersion": "1.8.9",
+  "description": "Navigate your vault using tags as folders.",
+  "author": "Gaelen McIntee",
+  "authorUrl": "https://github.com/McGaelen/obsidian-tag-folders",
+  "isDesktopOnly": false
 }

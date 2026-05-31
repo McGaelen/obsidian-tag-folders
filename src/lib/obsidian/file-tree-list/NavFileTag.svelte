@@ -1,9 +1,11 @@
 <script lang="ts">
-  let { tag }: { tag?: string } = $props()
+  import type { Snippet } from 'svelte'
+
+  let { children }: { children?: Snippet } = $props()
 </script>
 
-{#if tag}
+{#if children}
   <div class="nav-file-tag">
-    {tag}
+    {@render children?.()}
   </div>
 {/if}

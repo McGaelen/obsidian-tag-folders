@@ -4,22 +4,30 @@
   import BaseTreeItem from '$lib/obsidian/file-tree-list/BaseTreeItem.svelte'
 
   let {
-    folderName,
     depth = 0,
     onselect,
+    label,
+    navFileTag,
     children,
-  }: { folderName?: string; depth?: number; onselect?: () =>void, children?: Snippet } = $props()
+  }: {
+    depth?: number
+    onselect?: () => void
+    label?: Snippet
+    navFileTag?: Snippet
+    children?: Snippet
+  } = $props()
 
   let isExpanded = $state(false)
 </script>
 
 <Collapsible.Root bind:open={isExpanded} onclick={onselect}>
   <BaseTreeItem
-    itemName={folderName}
     isFolder
     {isExpanded}
     {depth}
     onclick={() => (isExpanded = !isExpanded)}
+    {label}
+    {navFileTag}
   />
   <Collapsible.Content>
     <div class="tree-item-children nav-folder-children">
