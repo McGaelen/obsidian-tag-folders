@@ -7,15 +7,19 @@
   let {
     isFolder,
     isExpanded,
+    isActive,
     depth = 0,
     onclick,
+    onexpand,
     label,
     navFileTag,
   }: {
     isFolder?: boolean
     isExpanded?: boolean
+    isActive?: boolean
     depth?: number
     onclick?: () => void
+    onexpand?: () => void
     label?: Snippet
     navFileTag?: Snippet
   } = $props()
@@ -32,9 +36,10 @@
     class={[
       'tree-item-self is-clickable items-center!',
       isFolder ? 'nav-folder-title mod-collapsible' : 'nav-file-title tappable',
+      {'is-active': isActive},
     ]}
     style="margin-inline-start: {margin}px !important; padding-inline-start: {padding}px !important;"
-    onclick={isFolder ? undefined : onclick}
+    {onclick}
   >
     {#if isFolder}
       <CollapsibleTrigger>
@@ -43,12 +48,10 @@
           <!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_static_element_interactions -->
           <div
             class="tree-item-icon collapse-icon"
-            onclick={isFolder
-              ? e => {
-                  e.stopPropagation()
-                  onclick?.()
-                }
-              : undefined}
+            onclick={e => {
+              e.stopPropagation()
+              onexpand?.()
+            }}
           >
             <FolderChevron {isExpanded} />
           </div>

@@ -3,26 +3,30 @@
   import TreeItemNavFolder from '$lib/obsidian/file-tree-list/TreeItemNavFolder.svelte'
   import { Hash } from '@lucide/svelte'
   import TreeItemNavFile from '$lib/obsidian/file-tree-list/TreeItemNavFile.svelte'
+  import { selectedTag, tags } from './tags.svelte'
 
   const {
+    tagTree,
     this_tag = '',
-    count,
-    subTags,
     depth = 0,
   }: {
+    tagTree: { [key: string]: boolean | {} }
     this_tag?: string
-    count?: number
-    subTags: { [key: string]: boolean | {} }
     depth?: number
   } = $props()
 </script>
 
-{#each Object.keys(subTags) as subTag (subTag)}
-  {@const children = subTags[subTag]}
+{#each Object.keys(tagTree) as subTag (subTag)}
+  {@const maybePseudoTag = this_tag + '/' + subTag}
+  {@const children = tagTree[subTag]}
   {@const TreeItemComponent =
     typeof children !== 'boolean' ? TreeItemNavFolder : TreeItemNavFile}
 
-  <TreeItemComponent {depth}>
+  <TreeItemComponent
+    {depth}
+    isActive={selectedTag.current === maybePseudoTag}
+    onclick={() => (selectedTag.current = maybePseudoTag)}
+  >
     {#snippet label()}
       <div class="flex items-center">
         <Hash size={16} class="text-(--nav-tag-color) mr-0.5 min-w-[16px]" />
@@ -31,17 +35,11 @@
     {/snippet}
 
     {#snippet navFileTag()}
-      {#if count != undefined}
-        {count}
-      {/if}
+      {tags.get(maybePseudoTag)?.length ?? ''}
     {/snippet}
 
     {#if typeof children !== 'boolean'}
-      <Self
-        subTags={children}
-        this_tag="{this_tag}/{subTag}"
-        depth={depth + 1}
-      />
+      <Self tagTree={children} this_tag={maybePseudoTag} depth={depth + 1} />
     {/if}
   </TreeItemComponent>
 {/each}

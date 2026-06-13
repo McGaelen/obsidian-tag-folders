@@ -5,13 +5,15 @@
 
   let {
     depth = 0,
-    onselect,
+    isActive,
+    onclick,
     label,
     navFileTag,
     children,
   }: {
     depth?: number
-    onselect?: () => void
+    isActive?: boolean
+    onclick?: () => void
     label?: Snippet
     navFileTag?: Snippet
     children?: Snippet
@@ -20,12 +22,14 @@
   let isExpanded = $state(false)
 </script>
 
-<Collapsible.Root bind:open={isExpanded} onclick={onselect}>
+<Collapsible.Root bind:open={isExpanded}>
   <BaseTreeItem
     isFolder
     {isExpanded}
+    {isActive}
     {depth}
-    onclick={() => (isExpanded = !isExpanded)}
+    {onclick}
+    onexpand={() => (isExpanded = !isExpanded)}
     {label}
     {navFileTag}
   />

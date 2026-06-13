@@ -4,9 +4,10 @@
 
   let props: {
     depth?: number
+    isActive?: boolean
     onclick?: () => void
+    label?: Snippet
     navFileTag?: Snippet
-    children?: Snippet
   } = $props()
 </script>
 

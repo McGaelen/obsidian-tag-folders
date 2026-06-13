@@ -1,10 +1,11 @@
 import { Plugin, type WorkspaceLeaf } from 'obsidian'
 import './styles.css'
-import { seedDb } from '$lib/db'
+import { rebuildTags } from './views/tag-folders/tags.svelte'
 import {
   TagFoldersView,
   VIEW_TYPE_TAG_FOLDERS,
 } from './views/tag-folders/TagFoldersView'
+
 // Remember to rename these classes and interfaces!
 
 // interface MyPluginSettings {
@@ -51,27 +52,27 @@ export default class MyPlugin extends Plugin {
   // }
 
   #setupDb() {
-    seedDb(this.app)
+    rebuildTags(this.app)
 
     // TODO: these event handlers should be optimized to only update the file provided
     this.app.vault.on('create', _file => {
       // console.log('create', _file)
-      seedDb(this.app)
+      rebuildTags(this.app)
     })
     this.app.vault.on('rename', _file => {
       // console.log('rename', _file)
-      seedDb(this.app)
+      rebuildTags(this.app)
     })
     // We can't use app.value.on('modify'), because we need to wait for obsidian's cache to refresh,
     // which is how we are able to read tags without manually parsing every file.
     // Therefore, we subscribe to the metadataCache 'changed' event instead.
     this.app.metadataCache.on('changed', (_file, _data, _cache) => {
       // console.log('changed', _file, _data, _cache)
-      seedDb(this.app)
+      rebuildTags(this.app)
     })
     this.app.metadataCache.on('deleted', (_file, _prevCache) => {
       // console.log('deleted', _file, _prevCache)
-      seedDb(this.app)
+      rebuildTags(this.app)
     })
   }
 
