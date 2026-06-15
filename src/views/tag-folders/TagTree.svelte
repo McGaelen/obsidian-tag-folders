@@ -14,9 +14,13 @@
     this_tag?: string
     depth?: number
   } = $props()
+
+  const subTags = $derived(
+    Object.keys(tagTree).toSorted((a, b) => a.localeCompare(b)),
+  )
 </script>
 
-{#each Object.keys(tagTree) as subTag (subTag)}
+{#each subTags as subTag (subTag)}
   {@const maybePseudoTag = this_tag + '/' + subTag}
   {@const children = tagTree[subTag]}
   {@const TreeItemComponent =
@@ -35,7 +39,9 @@
     {/snippet}
 
     {#snippet navFileTag()}
-      {tags.get(maybePseudoTag)?.length ?? ''}
+      <div style:font-size="var(--font-ui-smaller)">
+        {tags.get(maybePseudoTag)?.size ?? 0}
+      </div>
     {/snippet}
 
     {#if typeof children !== 'boolean'}

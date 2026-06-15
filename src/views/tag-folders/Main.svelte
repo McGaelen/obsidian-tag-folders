@@ -3,33 +3,105 @@
   import Toolbar from './Toolbar.svelte'
   import TagTree from './TagTree.svelte'
   import { set } from 'lodash-es'
-  import { selectedTag, tags } from './tags.svelte'
+  import { allFiles, selectedTag, tags, untaggedFiles } from './tags.svelte'
   import TreeItemNavFile from '$lib/obsidian/file-tree-list/TreeItemNavFile.svelte'
   import { getContext } from 'svelte'
-  import type { App } from 'obsidian'
+  import type { App, TFile } from 'obsidian'
+  import { Asterisk, Inbox } from '@lucide/svelte'
 
   const app: App = getContext('app')
 
   const tagTree = $derived(
-    tags.keys().reduce((acc, current) => {
-      // slice(1) will remove the leading slash, so it isn't replaced with a "."
-      const objectPath = current.slice(1).replaceAll('/', '.')
-      return set(acc, objectPath, true)
-    }, {}),
+    tags
+      .keys()
+      .filter(k => typeof k !== 'symbol')
+      .reduce((acc, current) => {
+        // slice(1) will remove the leading slash, so it isn't replaced with a "."
+        const objectPath = current.slice(1).replaceAll('/', '.')
+        return set(acc, objectPath, true)
+      }, {}),
   )
 
-  const files = $derived(tags.get(selectedTag.current))
+  const files: TFile[] = $derived.by(() => {
+    if (selectedTag.current === null) return []
+
+    const set = tags.get(selectedTag.current)
+    if (!set) return []
+
+    // Apply sorting
+    // noinspection UnnecessaryLocalVariableJS
+    const sorted = Array.from(set).toSorted((a, b) =>
+      a.name.localeCompare(b.name),
+    )
+
+    return sorted
+  })
+
+  let activeFile: TFile | null = $state(null)
+  $effect(() => {
+    const ref = app.workspace.on(
+      'active-leaf-change',
+      () => (activeFile = app.workspace.getActiveFile()),
+    )
+    return () => {
+      app.workspace.offref(ref)
+    }
+  })
+
 </script>
 
 <Toolbar />
 
 <NavFilesContainer>
+  <TreeItemNavFile
+    onclick={() => (selectedTag.current = allFiles)}
+    isActive={selectedTag.current === allFiles}
+  >
+    {#snippet label()}
+      <div class="flex items-center">
+        <Asterisk size={16} class="text-(--nav-tag-color)"></Asterisk>
+        All Files
+      </div>
+    {/snippet}
+    {#snippet navFileTag()}
+      <div style:font-size="var(--font-ui-smaller)">
+        {tags.get(allFiles)?.size ?? 0}
+      </div>
+    {/snippet}
+  </TreeItemNavFile>
+
+  <TreeItemNavFile
+    onclick={() => (selectedTag.current = untaggedFiles)}
+    isActive={selectedTag.current === untaggedFiles}
+  >
+    {#snippet label()}
+      <div class="flex items-center">
+        <Inbox size={16} class="text-(--nav-tag-color)"></Inbox>
+        Untagged
+      </div>
+    {/snippet}
+    {#snippet navFileTag()}
+      <div style:font-size="var(--font-ui-smaller)">
+        {tags.get(untaggedFiles)?.size ?? 0}
+      </div>
+    {/snippet}
+  </TreeItemNavFile>
+
   <TagTree {tagTree} />
+
   <div class="bg-(--divider-color) h-px w-full mb-[2px]"></div>
   {#each files as file}
-    <TreeItemNavFile onclick={() => app.workspace.getLeaf().openFile(file)}>
+    <TreeItemNavFile
+      onclick={() => app.workspace.getLeaf().openFile(file)}
+      isActive={activeFile === file}
+    >
       {#snippet label()}
-        {file.name}
+        {file.basename}
+      {/snippet}
+      {#snippet navFileTag()}
+        {#if file.extension !== 'md'}
+          {file.extension}
+        {/if}
       {/snippet}
     </TreeItemNavFile>
   {/each}
