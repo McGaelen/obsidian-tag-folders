@@ -24,12 +24,8 @@ export default class MyPlugin extends Plugin {
 
     this.registerView(VIEW_TYPE_TAG_FOLDERS, leaf => new TagFoldersView(leaf))
 
-    const onResolved = this.app.metadataCache.on('resolved', () => {
-      this.#setupDb()
-      this.app.metadataCache.offref(onResolved) // run this only once
-    })
-
     this.app.workspace.onLayoutReady(async () => {
+      this.#setupDb()
       // TODO: this should probably not happen every single time if the user deliberately closed it.
       // TODO: add some kind of state to remember if it's closed or not, then add a command to open it back up from the palette.
       await this.#ensureTagsListVisible()
