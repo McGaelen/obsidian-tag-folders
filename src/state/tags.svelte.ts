@@ -1,7 +1,9 @@
 import { SvelteMap, SvelteSet } from 'svelte/reactivity'
 import { type App, getAllTags, type TFile } from 'obsidian'
 
-export const tags = new SvelteMap<string | symbol, SvelteSet<TFile>>()
+export const tags = new SvelteMap<MaybePseudoTag | symbol, SvelteSet<TFile>>()
+export const untaggedFiles = Symbol()
+export const allFiles = Symbol()
 
 export function rebuildTags(app: App) {
   tags.clear()
@@ -30,7 +32,7 @@ export function rebuildTags(app: App) {
       for (let i = 0; i < absoluteTagParts.length; i++) {
         // Each part of the path including all previous parts becomes a discrete tag, as mentioned above.
         // So this tag we're inserting here might not be a "real" tag, hence why it's called "maybePseudoTag"
-        const maybePseudoTag = '/' + absoluteTagParts.slice(0, i + 1).join('/')
+        const maybePseudoTag = '#' + absoluteTagParts.slice(0, i + 1).join('/')
         upsert(maybePseudoTag, file)
       }
     }
@@ -44,17 +46,4 @@ function upsert(key: string | symbol, file: TFile) {
   } else {
     tags.set(key, new SvelteSet([file]))
   }
-}
-
-export const untaggedFiles = Symbol()
-export const allFiles = Symbol()
-
-let selected: string | symbol | null = $state(null)
-export const selectedTag = {
-  get current() {
-    return selected
-  },
-  set current(newSelectedTag) {
-    selected = newSelectedTag
-  },
 }

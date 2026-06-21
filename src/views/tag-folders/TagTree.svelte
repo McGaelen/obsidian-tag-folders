@@ -3,7 +3,10 @@
   import TreeItemNavFolder from '$lib/obsidian/file-tree-list/TreeItemNavFolder.svelte'
   import { Hash } from '@lucide/svelte'
   import TreeItemNavFile from '$lib/obsidian/file-tree-list/TreeItemNavFile.svelte'
-  import { selectedTag, tags } from './tags.svelte'
+  import { tags } from '$state/tags.svelte'
+  import { selectedTag } from '$state/selectedTag.svelte'
+  import { useSettings } from '$state/settings.svelte'
+  import TagIconDisplay from '$lib/TagIconDisplay.svelte'
 
   const {
     tagTree,
@@ -15,13 +18,15 @@
     depth?: number
   } = $props()
 
+  const settings = useSettings()
+
   const subTags = $derived(
     Object.keys(tagTree).toSorted((a, b) => a.localeCompare(b)),
   )
 </script>
 
 {#each subTags as subTag (subTag)}
-  {@const maybePseudoTag = this_tag + '/' + subTag}
+  {@const maybePseudoTag = this_tag + (depth === 0 ? '#' : '/') + subTag}
   {@const children = tagTree[subTag]}
   {@const TreeItemComponent =
     typeof children !== 'boolean' ? TreeItemNavFolder : TreeItemNavFile}
@@ -32,8 +37,13 @@
     onclick={() => (selectedTag.current = maybePseudoTag)}
   >
     {#snippet label()}
+      {@const icon = settings.current.icons[maybePseudoTag]}
       <div class="flex items-center">
-        <Hash size={16} class="text-(--nav-tag-color) mr-0.5 min-w-[16px]" />
+        {#if icon}
+          <TagIconDisplay {icon} />
+        {:else}
+          <Hash size={16} class="text-(--nav-tag-color) mr-0.5 min-w-[16px]" />
+        {/if}
         {subTag}
       </div>
     {/snippet}

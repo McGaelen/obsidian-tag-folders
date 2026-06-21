@@ -1,10 +1,12 @@
 import { type IconName, ItemView, WorkspaceLeaf } from 'obsidian'
-import { mount } from 'svelte'
-import Main from './Main.svelte'
+import { mount, unmount } from 'svelte'
+import TagFoldersViewSvelte from './TagFoldersViewSvelte.svelte'
 
 export const VIEW_TYPE_TAG_FOLDERS = 'tag-folders-view'
 
 export class TagFoldersView extends ItemView {
+  #instance: ReturnType<typeof mount> | undefined
+
   constructor(leaf: WorkspaceLeaf) {
     super(leaf)
   }
@@ -26,16 +28,18 @@ export class TagFoldersView extends ItemView {
     // clear out div elements that obsidian automatically adds to the containerEl...
     container.replaceChildren()
 
-    const context: Map<any, any> = new Map()
+    const context = new Map<unknown, unknown>()
     context.set('app', this.app)
 
-    mount(Main, {
+    this.#instance = mount(TagFoldersViewSvelte, {
       target: container,
       context,
     })
   }
 
   async onClose() {
-    // Nothing to clean up.
+    if (this.#instance) {
+      unmount(this.#instance)
+    }
   }
 }

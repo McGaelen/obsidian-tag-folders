@@ -53,6 +53,7 @@ export default defineConfig({
   resolve: {
     alias: {
       $lib: resolve(__dirname, 'src/lib'),
+      $state: resolve(__dirname, 'src/state'),
     },
   },
   assetsInclude: ['**/*.wasm'],

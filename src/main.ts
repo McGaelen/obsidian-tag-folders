@@ -1,26 +1,21 @@
 import { Plugin, type WorkspaceLeaf } from 'obsidian'
 import './styles.css'
-import { rebuildTags } from './views/tag-folders/tags.svelte'
 import {
   TagFoldersView,
   VIEW_TYPE_TAG_FOLDERS,
 } from './views/tag-folders/TagFoldersView'
+import {
+  TagFolderSettingTab,
+} from './settings/TagFoldersSettingsTab'
+import { rebuildTags } from '$state/tags.svelte'
+import { initSettings } from '$state/settings.svelte'
 
-// Remember to rename these classes and interfaces!
-
-// interface MyPluginSettings {
-//   mySetting: string
-// }
-//
-// const DEFAULT_SETTINGS: MyPluginSettings = {
-//   mySetting: 'default',
-// }
-
-export default class MyPlugin extends Plugin {
-  // settings: MyPluginSettings
-
+export default class TagFoldersPlugin extends Plugin {
   async onload() {
-    // await this.loadSettings()
+    initSettings(await this.loadData(), this.saveData.bind(this))
+
+    // This adds a settings tab so the user can configure various aspects of the plugin
+    this.addSettingTab(new TagFolderSettingTab(this.app, this));
 
     this.registerView(VIEW_TYPE_TAG_FOLDERS, leaf => new TagFoldersView(leaf))
 
@@ -30,22 +25,11 @@ export default class MyPlugin extends Plugin {
       // TODO: add some kind of state to remember if it's closed or not, then add a command to open it back up from the palette.
       await this.#ensureTagsListVisible()
     })
-
-    // This adds a settings tab so the user can configure various aspects of the plugin
-    // this.addSettingTab(new SampleSettingTab(this.app, this));
   }
 
   onunload() {
     this.app.workspace.detachLeavesOfType(VIEW_TYPE_TAG_FOLDERS)
   }
-
-  // async loadSettings() {
-  //   this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData())
-  // }
-
-  // async saveSettings() {
-  //   await this.saveData(this.settings)
-  // }
 
   #setupDb() {
     rebuildTags(this.app)
@@ -90,47 +74,3 @@ export default class MyPlugin extends Plugin {
     }
   }
 }
-
-// class SampleModal extends Modal {
-//   constructor(app: App) {
-//     super(app)
-//   }
-//
-//   onOpen() {
-//     const { contentEl } = this
-//     contentEl.setText('Woah!')
-//   }
-//
-//   onClose() {
-//     const { contentEl } = this
-//     contentEl.empty()
-//   }
-// }
-//
-// class SampleSettingTab extends PluginSettingTab {
-//   plugin: MyPlugin
-//
-//   constructor(app: App, plugin: MyPlugin) {
-//     super(app, plugin)
-//     this.plugin = plugin
-//   }
-//
-//   display(): void {
-//     const { containerEl } = this
-//
-//     containerEl.empty()
-//
-//     new Setting(containerEl)
-//       .setName('Setting #1')
-//       .setDesc("It's a secret")
-//       .addText(text =>
-//         text
-//           .setPlaceholder('Enter your secret')
-//           .setValue(this.plugin.settings.mySetting)
-//           .onChange(async value => {
-//             this.plugin.settings.mySetting = value
-//             await this.plugin.saveSettings()
-//           }),
-//       )
-//   }
-// }

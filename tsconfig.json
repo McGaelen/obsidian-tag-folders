@@ -14,10 +14,12 @@
     "importHelpers": true,
     "isolatedModules": true,
     "strictNullChecks": true,
-    "lib": ["DOM", "ES5", "ES6", "ES7", "ESNext"],
+    "lib": ["DOM", "ES5", "ES6", "ES7", "ESNext", "ESNext.Array"],
     "paths": {
       "$lib": ["./src/lib"],
-      "$lib/*": ["./src/lib/*"]
+      "$lib/*": ["./src/lib/*"],
+      "$state": ["./src/state"],
+      "$state/*": ["./src/state/*"],
     },
     "types": ["vite/client"]
   },

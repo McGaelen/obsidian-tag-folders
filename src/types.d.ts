@@ -1,0 +1,5 @@
+/**
+ * Represents a tag path which may or may not correspond to a real tag. If it's
+ * not a real tag, then it is a partial path of a real tag.
+ */
+type MaybePseudoTag = string
