@@ -16,19 +16,23 @@ export const settings = {
 }
 
 export function initSettings(
-  initial: TagFoldersSettings,
+  initial: TagFoldersSettings | null,
   saveDataFn: TagFoldersPlugin['saveData'],
 ) {
   // Validation
-  const _temp = initial
-  if (!_temp.exclusions) {
-    _temp.exclusions = []
+  let temp = initial
+
+  if (!temp) {
+    temp = DEFAULT_SETTINGS
   }
-  if (!_temp.icons) {
-    _temp.icons = {}
+  if (!temp.exclusions) {
+    temp.exclusions = []
+  }
+  if (!temp.icons) {
+    temp.icons = {}
   }
 
-  _settings = _temp
+  _settings = temp
 
   $effect(() => {
     console.log('save called', $state.snapshot(_settings))

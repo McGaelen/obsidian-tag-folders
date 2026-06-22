@@ -12,7 +12,8 @@ export default class TagFoldersPlugin extends Plugin {
   #destroyEffect?: () => void
 
   async onload() {
-    const loadedSettings = await this.loadData()
+    // can be null when it's the first time launching
+    const loadedSettings: TagFoldersSettings | null = await this.loadData()
 
     // Setup a root effect, so we can start using svelte runes right away.
     this.#destroyEffect = $effect.root(() => {
