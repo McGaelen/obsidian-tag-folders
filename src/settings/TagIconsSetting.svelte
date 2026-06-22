@@ -39,9 +39,7 @@
 </script>
 
 <SettingGroup heading="Tag Icons">
-  <SettingItem
-    desc="Give your tags icons to make them visually distinct."
-  ></SettingItem>
+  <SettingItem desc="Give your tags icons to make them visually distinct." />
 
   {#each Object.entries(settings.current.icons) as [tag, { iconId, raw }]}
     <div class="flex items-center justify-between min-h-[32px]">

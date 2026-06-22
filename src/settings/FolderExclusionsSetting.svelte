@@ -34,7 +34,7 @@
 <SettingGroup heading="Folder Exclusions">
   <SettingItem
     desc="All files in the following folders will be excluded from showing up in the TagFolders view, even if they contain tags. This is useful for things like hiding the attachments directory."
-  ></SettingItem>
+  />
 
   {#each settings.current.exclusions as excl}
     <div class="flex items-center justify-between min-h-[32px]">

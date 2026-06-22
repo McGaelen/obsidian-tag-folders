@@ -5,10 +5,10 @@
   import SettingItem from '$lib/obsidian/setting-group/SettingItem.svelte'
   import { settings } from '$state/settings.svelte'
 
-  let { app, tag }: { app: App; tag: MaybePseudoTag } = $props()
+  let { app, tag, onclose }: { app: App; tag: MaybePseudoTag, onclose: () => void } = $props()
 
   const current = $derived(settings.current.icons[tag])
-  const lastTagPart = $derived(tag.split('/').last())
+  const lastTagPart = $derived(tag.split('/').last()?.replace('#', ''))
 
   let mode: 'iconId' | 'raw' = $derived(current.iconId ? 'iconId' : 'raw')
   let iconId = $derived(current.iconId)
@@ -26,10 +26,11 @@
         raw,
       }
     }
+    onclose()
   }
 </script>
 
-<div class="flex items-center justify-center py-3 gap-2">
+<div class="flex items-center justify-center py-3 gap-1">
   {#if mode === 'iconId' && iconId}
     <RegisteredIcon {iconId} />
   {:else if raw !== undefined}

@@ -11,7 +11,7 @@ export class SvelteModal<T extends Component> extends Modal {
   #props?: ComponentProps<T>
   #instance?: ReturnType<typeof mount>
 
-  constructor(app: App, p_component: T, p_props?: ComponentProps<T>) {
+  constructor(app: App, p_component: T, p_props?: ComponentProps<T> & { onclose: () => void }) {
     super(app)
     this.#component = p_component
     this.#props = p_props

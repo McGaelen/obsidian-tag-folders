@@ -6,7 +6,11 @@ import TagIconConfigureModalContent from './TagIconConfigureModalContent.svelte'
 export class TagIconConfigureModal extends SvelteModal<TagIconConfigureModalContent> {
   constructor(app: App, tag: MaybePseudoTag) {
     // @ts-expect-error it thinks the svelte component isn't the right type, but this same code works elsewhere with no error lines
-    super(app, TagIconConfigureModalContent, { app, tag })
+    super(app, TagIconConfigureModalContent, {
+      app,
+      tag,
+      onclose: () => this.close(),
+    })
     this.setTitle('Configure Tag Icon')
   }
 }
