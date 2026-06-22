@@ -27,14 +27,14 @@ export function rebuildTags(app: App) {
       return
     }
 
-    upsert(taggedFiles, file)
-
     const fileTags = getAllTags(cache)
 
     if (!fileTags?.length) {
       upsert(untaggedFiles, file)
       return
     }
+
+    upsert(taggedFiles, file)
 
     // absoluteTag similar to an "absolute path"
     for (const absoluteTag of fileTags) {
