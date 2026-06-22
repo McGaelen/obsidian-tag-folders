@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { useSettings } from '$state/settings.svelte'
+  import { settings } from '$state/settings.svelte'
   import { X } from '@lucide/svelte'
   import { type App, displayTooltip } from 'obsidian'
   import SettingItem from '$lib/obsidian/setting-group/SettingItem.svelte'
@@ -8,12 +8,9 @@
   import { TagSuggest } from './TagSuggest'
   import { SvelteModal } from '$lib/obsidian/modal/SvelteModal'
   import TagIconModalContent from './TagIconModalContent.svelte'
-  import RegisteredIcon from '$lib/obsidian/icon/RegisteredIcon.svelte'
   import TagIconDisplay from '$lib/TagIconDisplay.svelte'
 
   let { app }: { app: App } = $props()
-
-  const settings = useSettings()
 
   let inputEl: HTMLInputElement
   let newTag: MaybePseudoTag = $state('')

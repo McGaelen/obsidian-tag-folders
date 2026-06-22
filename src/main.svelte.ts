@@ -4,30 +4,35 @@ import {
   TagFoldersView,
   VIEW_TYPE_TAG_FOLDERS,
 } from './views/tag-folders/TagFoldersView'
-import {
-  TagFolderSettingTab,
-} from './settings/TagFoldersSettingsTab'
+import { TagFolderSettingTab } from './settings/TagFoldersSettingsTab'
 import { rebuildTags } from '$state/tags.svelte'
 import { initSettings } from '$state/settings.svelte'
 
 export default class TagFoldersPlugin extends Plugin {
+  #destroyEffect?: () => void
+
   async onload() {
-    initSettings(await this.loadData(), this.saveData.bind(this))
+    const loadedSettings = await this.loadData()
 
-    // This adds a settings tab so the user can configure various aspects of the plugin
-    this.addSettingTab(new TagFolderSettingTab(this.app, this));
+    // Setup a root effect, so we can start using svelte runes right away.
+    this.#destroyEffect = $effect.root(() => {
+      // Initialize the settings store
+      initSettings(loadedSettings, this.saveData.bind(this))
+      this.addSettingTab(new TagFolderSettingTab(this.app, this))
 
-    this.registerView(VIEW_TYPE_TAG_FOLDERS, leaf => new TagFoldersView(leaf))
+      this.registerView(VIEW_TYPE_TAG_FOLDERS, leaf => new TagFoldersView(leaf))
 
-    this.app.workspace.onLayoutReady(async () => {
-      this.#setupDb()
-      // TODO: this should probably not happen every single time if the user deliberately closed it.
-      // TODO: add some kind of state to remember if it's closed or not, then add a command to open it back up from the palette.
-      await this.#ensureTagsListVisible()
+      this.app.workspace.onLayoutReady(async () => {
+        this.#setupDb()
+        // TODO: this should probably not happen every single time if the user deliberately closed it.
+        // TODO: add some kind of state to remember if it's closed or not, then add a command to open it back up from the palette.
+        await this.#ensureTagsListVisible()
+      })
     })
   }
 
   onunload() {
+    this.#destroyEffect?.()
     this.app.workspace.detachLeavesOfType(VIEW_TYPE_TAG_FOLDERS)
   }
 

@@ -60,7 +60,7 @@ export default defineConfig({
   build: {
     // Using Vite in library mode https://vite.dev/guide/build.html#library-mode
     lib: {
-      entry: resolve(__dirname, 'src/main.ts'),
+      entry: resolve(__dirname, 'src/main.svelte.ts'),
       formats: ['cjs'],
       fileName: 'main',
       cssFileName: 'styles',

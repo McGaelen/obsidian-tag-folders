@@ -3,11 +3,9 @@
   import { IconSuggest } from './IconSuggest'
   import RegisteredIcon from '$lib/obsidian/icon/RegisteredIcon.svelte'
   import SettingItem from '$lib/obsidian/setting-group/SettingItem.svelte'
-  import { useSettings } from '$state/settings.svelte'
+  import { settings } from '$state/settings.svelte'
 
   let { app, tag }: { app: App; tag: MaybePseudoTag } = $props()
-
-  const settings = useSettings()
 
   const current = $derived(settings.current.icons[tag])
   const lastTagPart = $derived(tag.split('/').last())

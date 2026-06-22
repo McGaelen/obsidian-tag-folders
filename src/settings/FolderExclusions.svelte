@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { useSettings } from '$state/settings.svelte'
+  import { settings } from '$state/settings.svelte'
   import { X } from '@lucide/svelte'
   import { type App, displayTooltip } from 'obsidian'
   import { FolderSuggest } from './FolderSuggest'
@@ -8,8 +8,6 @@
   import SettingGroup from '$lib/obsidian/setting-group/SettingGroup.svelte'
 
   let { app }: { app: App } = $props()
-
-  const settings = useSettings()
 
   let inputEl: HTMLInputElement
   let newExcl = $state('')

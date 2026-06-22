@@ -5,7 +5,7 @@
   import TreeItemNavFile from '$lib/obsidian/file-tree-list/TreeItemNavFile.svelte'
   import { tags } from '$state/tags.svelte'
   import { selectedTag } from '$state/selectedTag.svelte'
-  import { useSettings } from '$state/settings.svelte'
+  import { settings } from '$state/settings.svelte'
   import TagIconDisplay from '$lib/TagIconDisplay.svelte'
 
   const {
@@ -17,8 +17,6 @@
     this_tag?: string
     depth?: number
   } = $props()
-
-  const settings = useSettings()
 
   const subTags = $derived(
     Object.keys(tagTree).toSorted((a, b) => a.localeCompare(b)),

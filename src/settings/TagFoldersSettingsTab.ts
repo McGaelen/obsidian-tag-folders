@@ -1,4 +1,4 @@
-import TagFoldersPlugin from '../main'
+import TagFoldersPlugin from '../main.svelte.js'
 import { App, PluginSettingTab } from 'obsidian'
 import { mount, unmount } from 'svelte'
 import TagFoldersSettingsTabSvelte from './TagFoldersSettingsTabSvelte.svelte'

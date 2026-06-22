@@ -3,3 +3,13 @@
  * not a real tag, then it is a partial path of a real tag.
  */
 type MaybePseudoTag = string
+
+interface TagIcon {
+  iconId?: string
+  raw?: string
+}
+
+interface TagFoldersSettings {
+  exclusions: string[]
+  icons: Record<MaybePseudoTag, TagIcon>
+}
