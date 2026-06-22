@@ -30,9 +30,10 @@
     if (!set) return []
 
     // Apply sorting
+    // TODO: support more sorting options
     // noinspection UnnecessaryLocalVariableJS
     const sorted = Array.from(set).toSorted((a, b) =>
-      a.name.localeCompare(b.name),
+      b.stat.mtime - a.stat.mtime,
     )
 
     return sorted
