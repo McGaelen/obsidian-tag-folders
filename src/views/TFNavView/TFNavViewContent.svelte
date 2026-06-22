@@ -3,12 +3,12 @@
   import Toolbar from './Toolbar.svelte'
   import TagTree from './TagTree.svelte'
   import { set } from 'lodash-es'
-  import { allFiles, tags, untaggedFiles } from '$state/tags.svelte'
+  import { taggedFiles, filteredFiles, tags, untaggedFiles } from '$state/tags.svelte'
   import { selectedTag } from '$state/selectedTag.svelte'
   import TreeItemNavFile from '$lib/obsidian/file-tree-list/TreeItemNavFile.svelte'
   import { getContext } from 'svelte'
   import type { App, TFile } from 'obsidian'
-  import { Asterisk, Inbox } from '@lucide/svelte'
+  import { Asterisk, Inbox, Funnel } from '@lucide/svelte'
 
   const app: App = getContext('app')
 
@@ -55,18 +55,18 @@
 
 <NavFilesContainer>
   <TreeItemNavFile
-    onclick={() => (selectedTag.current = allFiles)}
-    isActive={selectedTag.current === allFiles}
+    onclick={() => (selectedTag.current = taggedFiles)}
+    isActive={selectedTag.current === taggedFiles}
   >
     {#snippet label()}
       <div class="flex items-center">
         <Asterisk size={16} class="text-(--nav-tag-color)"></Asterisk>
-        All Files
+        Tagged
       </div>
     {/snippet}
     {#snippet navFileTag()}
       <div style:font-size="var(--font-ui-smaller)">
-        {tags.get(allFiles)?.size ?? 0}
+        {tags.get(taggedFiles)?.size ?? 0}
       </div>
     {/snippet}
   </TreeItemNavFile>
@@ -84,6 +84,23 @@
     {#snippet navFileTag()}
       <div style:font-size="var(--font-ui-smaller)">
         {tags.get(untaggedFiles)?.size ?? 0}
+      </div>
+    {/snippet}
+  </TreeItemNavFile>
+
+  <TreeItemNavFile
+    onclick={() => (selectedTag.current = filteredFiles)}
+    isActive={selectedTag.current === filteredFiles}
+  >
+    {#snippet label()}
+      <div class="flex items-center">
+        <Funnel size={16} class="text-(--nav-tag-color)"></Funnel>
+        Filtered
+      </div>
+    {/snippet}
+    {#snippet navFileTag()}
+      <div style:font-size="var(--font-ui-smaller)">
+        {tags.get(filteredFiles)?.size ?? 0}
       </div>
     {/snippet}
   </TreeItemNavFile>

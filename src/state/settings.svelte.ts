@@ -1,7 +1,7 @@
 import type TagFoldersPlugin from '../main.svelte.js'
 
 export const DEFAULT_SETTINGS: TagFoldersSettings = {
-  exclusions: [],
+  exclusions: ['Attachments'],
   icons: {},
 }
 

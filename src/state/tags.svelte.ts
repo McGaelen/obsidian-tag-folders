@@ -1,9 +1,11 @@
 import { SvelteMap, SvelteSet } from 'svelte/reactivity'
 import { type App, getAllTags, type TFile } from 'obsidian'
+import { settings } from '$state/settings.svelte'
 
 export const tags = new SvelteMap<MaybePseudoTag | symbol, SvelteSet<TFile>>()
+export const taggedFiles = Symbol()
 export const untaggedFiles = Symbol()
-export const allFiles = Symbol()
+export const filteredFiles = Symbol()
 
 export function rebuildTags(app: App) {
   tags.clear()
@@ -14,7 +16,18 @@ export function rebuildTags(app: App) {
     // TODO: Obsidian also doesn't show tags inside canvas files in the Tags view, but they _DO_ show up in search results!
     if (!cache) return
 
-    upsert(allFiles, file)
+    // TODO: the exclusions setting should be more configurable to allow specific files to be excluded by regex
+    if (
+      ['svg', 'png', 'jpeg', 'jpg', 'canvas', 'base'].includes(
+        file.extension,
+      ) ||
+      settings.current.exclusions.some(e => file.path.startsWith(e))
+    ) {
+      upsert(filteredFiles, file)
+      return
+    }
+
+    upsert(taggedFiles, file)
 
     const fileTags = getAllTags(cache)
 
