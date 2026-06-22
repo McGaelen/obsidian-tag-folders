@@ -1,10 +1,10 @@
 import { Plugin, type WorkspaceLeaf } from 'obsidian'
 import './styles.css'
 import {
-  TagFoldersView,
+  TFNavView,
   VIEW_TYPE_TAG_FOLDERS,
-} from './views/tag-folders/TagFoldersView'
-import { TagFolderSettingTab } from './settings/TagFoldersSettingsTab'
+} from './views/TFNavView/TFNavView'
+import { TFSettingTab } from './settings/TFSettingTab'
 import { rebuildTags } from '$state/tags.svelte'
 import { initSettings } from '$state/settings.svelte'
 
@@ -19,9 +19,9 @@ export default class TagFoldersPlugin extends Plugin {
       // Initialize the settings store
       initSettings(loadedSettings, this.saveData.bind(this))
 
-      this.addSettingTab(new TagFolderSettingTab(this.app, this))
+      this.addSettingTab(new TFSettingTab(this.app, this))
 
-      this.registerView(VIEW_TYPE_TAG_FOLDERS, leaf => new TagFoldersView(leaf))
+      this.registerView(VIEW_TYPE_TAG_FOLDERS, leaf => new TFNavView(leaf))
 
       this.app.workspace.onLayoutReady(async () => {
         // Initialize the tags store

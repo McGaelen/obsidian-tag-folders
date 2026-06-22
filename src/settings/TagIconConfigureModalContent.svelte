@@ -1,6 +1,6 @@
 <script lang="ts">
   import { type App } from 'obsidian'
-  import { IconSuggest } from './IconSuggest'
+  import { IconSuggest } from '$lib/suggest/IconSuggest'
   import RegisteredIcon from '$lib/obsidian/icon/RegisteredIcon.svelte'
   import SettingItem from '$lib/obsidian/setting-group/SettingItem.svelte'
   import { settings } from '$state/settings.svelte'

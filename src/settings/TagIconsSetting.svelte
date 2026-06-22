@@ -5,10 +5,9 @@
   import SettingItem from '$lib/obsidian/setting-group/SettingItem.svelte'
   import { flushSync } from 'svelte'
   import SettingGroup from '$lib/obsidian/setting-group/SettingGroup.svelte'
-  import { TagSuggest } from './TagSuggest'
-  import { SvelteModal } from '$lib/obsidian/modal/SvelteModal'
-  import TagIconModalContent from './TagIconModalContent.svelte'
+  import { TagSuggest } from '$lib/suggest/TagSuggest'
   import TagIconDisplay from '$lib/TagIconDisplay.svelte'
+  import { TagIconConfigureModal } from './TagIconConfigureModal'
 
   let { app }: { app: App } = $props()
 
@@ -39,26 +38,22 @@
   }
 </script>
 
-<SettingGroup>
+<SettingGroup heading="Tag Icons">
   <SettingItem
-    name="Tag Icons"
     desc="Give your tags icons to make them visually distinct."
   ></SettingItem>
 
   {#each Object.entries(settings.current.icons) as [tag, { iconId, raw }]}
     <div class="flex items-center justify-between min-h-[32px]">
       <div class="flex items-center gap-2">
-        <TagIconDisplay icon={{iconId, raw}} />
+        <TagIconDisplay icon={{ iconId, raw }} />
         <div class="wrap-anywhere text-sm!">{tag}</div>
       </div>
-      <div class="flex items-center">
+      <div class="flex items-center gap-2">
         <button
           class="h-[24px]!"
           aria-label="Delete"
-          onclick={() =>
-            new SvelteModal(app, TagIconModalContent, { app, tag })
-              .setTitle('Configure Tag Icon')
-              .open()}
+          onclick={() => new TagIconConfigureModal(app, tag).open()}
         >
           Configure
         </button>

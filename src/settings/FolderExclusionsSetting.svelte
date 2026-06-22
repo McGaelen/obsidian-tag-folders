@@ -2,7 +2,7 @@
   import { settings } from '$state/settings.svelte'
   import { X } from '@lucide/svelte'
   import { type App, displayTooltip } from 'obsidian'
-  import { FolderSuggest } from './FolderSuggest'
+  import { FolderSuggest } from '$lib/suggest/FolderSuggest'
   import SettingItem from '$lib/obsidian/setting-group/SettingItem.svelte'
   import { flushSync } from 'svelte'
   import SettingGroup from '$lib/obsidian/setting-group/SettingGroup.svelte'
@@ -31,10 +31,9 @@
   }
 </script>
 
-<SettingGroup>
+<SettingGroup heading="Folder Exclusions">
   <SettingItem
-    name="Folder Exclusions"
-    desc="Type the name of a folder to add. If the name begins and ends with a '/', then it will be treated as a /regex/."
+    desc="All files in the following folders will be excluded from showing up in the TagFolders view, even if they contain tags. This is useful for things like hiding the attachments directory."
   ></SettingItem>
 
   {#each settings.current.exclusions as excl}
@@ -55,7 +54,7 @@
       bind:value={newExcl}
       bind:this={inputEl}
       type="text"
-      placeholder="Folder name or /regex/"
+      placeholder="Folder name"
       class="grow"
       {@attach el => {
         const fs = new FolderSuggest(app, el).onSelect(v => {

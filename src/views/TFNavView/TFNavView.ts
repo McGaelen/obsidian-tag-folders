@@ -1,10 +1,10 @@
 import { type IconName, ItemView, WorkspaceLeaf } from 'obsidian'
 import { mount, unmount } from 'svelte'
-import TagFoldersViewSvelte from './TagFoldersViewSvelte.svelte'
+import TfNavViewContent from './TFNavViewContent.svelte'
 
 export const VIEW_TYPE_TAG_FOLDERS = 'tag-folders-view'
 
-export class TagFoldersView extends ItemView {
+export class TFNavView extends ItemView {
   #instance: ReturnType<typeof mount> | undefined
 
   constructor(leaf: WorkspaceLeaf) {
@@ -31,7 +31,7 @@ export class TagFoldersView extends ItemView {
     const context = new Map<unknown, unknown>()
     context.set('app', this.app)
 
-    this.#instance = mount(TagFoldersViewSvelte, {
+    this.#instance = mount(TfNavViewContent, {
       target: container,
       context,
     })
