@@ -18,12 +18,15 @@ export default class TagFoldersPlugin extends Plugin {
     this.#destroyEffect = $effect.root(() => {
       // Initialize the settings store
       initSettings(loadedSettings, this.saveData.bind(this))
+
       this.addSettingTab(new TagFolderSettingTab(this.app, this))
 
       this.registerView(VIEW_TYPE_TAG_FOLDERS, leaf => new TagFoldersView(leaf))
 
       this.app.workspace.onLayoutReady(async () => {
-        this.#setupDb()
+        // Initialize the tags store
+        this.#initTags()
+
         // TODO: this should probably not happen every single time if the user deliberately closed it.
         // TODO: add some kind of state to remember if it's closed or not, then add a command to open it back up from the palette.
         await this.#ensureTagsListVisible()
@@ -36,7 +39,7 @@ export default class TagFoldersPlugin extends Plugin {
     this.app.workspace.detachLeavesOfType(VIEW_TYPE_TAG_FOLDERS)
   }
 
-  #setupDb() {
+  #initTags() {
     rebuildTags(this.app)
 
     // TODO: these event handlers should be optimized to only update the file provided
