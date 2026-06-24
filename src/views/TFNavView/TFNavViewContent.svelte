@@ -3,19 +3,14 @@
   import Toolbar from './Toolbar.svelte'
   import TagTree from './TagTree.svelte'
   import { set } from 'lodash-es'
-  import {
-    taggedFiles,
-    filteredFiles,
-    tags,
-    untaggedFiles,
-  } from '$state/tags.svelte'
+  import { Tags, tags } from '$state/tags.svelte'
   import { selectedTag } from '$state/selectedTag.svelte'
   import TreeItemNavFile from '$lib/obsidian/file-tree-list/TreeItemNavFile.svelte'
   import type { TFile } from 'obsidian'
   import { Asterisk, Inbox, Funnel } from '@lucide/svelte'
 
   const tagTree = $derived(
-    tags
+    tags.current
       .keys()
       .filter(k => typeof k !== 'symbol')
       .reduce((acc, current) => {
@@ -28,7 +23,7 @@
   const files: TFile[] = $derived.by(() => {
     if (selectedTag.current === null) return []
 
-    const set = tags.get(selectedTag.current)
+    const set = tags.current.get(selectedTag.current)
     if (!set) return []
 
     // Apply sorting
@@ -57,8 +52,8 @@
 
 <NavFilesContainer>
   <TreeItemNavFile
-    onclick={() => (selectedTag.current = taggedFiles)}
-    isActive={selectedTag.current === taggedFiles}
+    onclick={() => (selectedTag.current = Tags.taggedFiles)}
+    isActive={selectedTag.current === Tags.taggedFiles}
   >
     {#snippet label()}
       <div class="flex items-center">
@@ -68,14 +63,14 @@
     {/snippet}
     {#snippet navFileTag()}
       <div style:font-size="var(--font-ui-smaller)">
-        {tags.get(taggedFiles)?.size ?? 0}
+        {tags.current.get(Tags.taggedFiles)?.size ?? 0}
       </div>
     {/snippet}
   </TreeItemNavFile>
 
   <TreeItemNavFile
-    onclick={() => (selectedTag.current = untaggedFiles)}
-    isActive={selectedTag.current === untaggedFiles}
+    onclick={() => (selectedTag.current = Tags.untaggedFiles)}
+    isActive={selectedTag.current === Tags.untaggedFiles}
   >
     {#snippet label()}
       <div class="flex items-center">
@@ -85,14 +80,14 @@
     {/snippet}
     {#snippet navFileTag()}
       <div style:font-size="var(--font-ui-smaller)">
-        {tags.get(untaggedFiles)?.size ?? 0}
+        {tags.current.get(Tags.untaggedFiles)?.size ?? 0}
       </div>
     {/snippet}
   </TreeItemNavFile>
 
   <TreeItemNavFile
-    onclick={() => (selectedTag.current = filteredFiles)}
-    isActive={selectedTag.current === filteredFiles}
+    onclick={() => (selectedTag.current = Tags.filteredFiles)}
+    isActive={selectedTag.current === Tags.filteredFiles}
   >
     {#snippet label()}
       <div class="flex items-center">
@@ -102,7 +97,7 @@
     {/snippet}
     {#snippet navFileTag()}
       <div style:font-size="var(--font-ui-smaller)">
-        {tags.get(filteredFiles)?.size ?? 0}
+        {tags.current.get(Tags.filteredFiles)?.size ?? 0}
       </div>
     {/snippet}
   </TreeItemNavFile>

@@ -48,7 +48,7 @@
 
     {#snippet navFileTag()}
       <div style:font-size="var(--font-ui-smaller)">
-        {tags.get(maybePseudoTag)?.size ?? 0}
+        {tags.current.get(maybePseudoTag)?.size ?? 0}
       </div>
     {/snippet}
 

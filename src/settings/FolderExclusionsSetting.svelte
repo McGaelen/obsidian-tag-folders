@@ -6,7 +6,7 @@
   import SettingItem from '$lib/obsidian/setting-group/SettingItem.svelte'
   import { flushSync } from 'svelte'
   import SettingGroup from '$lib/obsidian/setting-group/SettingGroup.svelte'
-  import { rebuildTags } from '$state/tags.svelte'
+  import { tags } from '$state/tags.svelte'
 
   let inputEl: HTMLInputElement
   let newExcl = $state('')
@@ -24,12 +24,12 @@
       inputEl.focus()
     }
 
-    rebuildTags()
+    tags.rebuildTags()
   }
 
   function removeExcl(excl: string) {
     settings.current.exclusions.remove(excl)
-    rebuildTags()
+    tags.rebuildTags()
   }
 </script>
 
