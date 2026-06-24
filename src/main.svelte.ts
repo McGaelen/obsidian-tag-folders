@@ -17,7 +17,7 @@ export default class TagFoldersPlugin extends Plugin {
       // Initialize the settings store
       initSettings(loadedSettings, this.saveData.bind(this))
 
-      this.addSettingTab(new TFSettingTab(this.app, this))
+      this.addSettingTab(new TFSettingTab(this))
 
       this.registerView(VIEW_TYPE_TAG_FOLDERS, leaf => new TFNavView(leaf))
 
@@ -38,16 +38,16 @@ export default class TagFoldersPlugin extends Plugin {
   }
 
   async #initTags() {
-    await rebuildTags(this.app)
+    await rebuildTags()
 
     // TODO: these event handlers should be optimized to only update the file provided
     this.app.vault.on('create', _file => {
       // console.log('create', _file)
-      rebuildTags(this.app)
+      rebuildTags()
     })
     this.app.vault.on('rename', _file => {
       // console.log('rename', _file)
-      rebuildTags(this.app)
+      rebuildTags()
     })
 
     // We can't use app.value.on('modify'), because we need to wait for obsidian's cache to refresh,
@@ -56,11 +56,11 @@ export default class TagFoldersPlugin extends Plugin {
     // NOTE: This does not work for canvas files!
     this.app.metadataCache.on('changed', (_file, _data, _cache) => {
       // console.log('changed', _file, _data, _cache)
-      rebuildTags(this.app)
+      rebuildTags()
     })
     this.app.metadataCache.on('deleted', (_file, _prevCache) => {
       // console.log('deleted', _file, _prevCache)
-      rebuildTags(this.app)
+      rebuildTags()
     })
 
     // For canvas files, since they don't have any data stored in the cache (they only are a {}),
@@ -68,7 +68,7 @@ export default class TagFoldersPlugin extends Plugin {
     this.app.vault.on('modify', file => {
       if (file instanceof TFile && file.extension === 'canvas') {
         // console.log('modify', file)
-        rebuildTags(this.app)
+        rebuildTags()
       }
     })
   }

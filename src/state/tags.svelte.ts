@@ -9,7 +9,7 @@ export const taggedFiles = Symbol()
 export const untaggedFiles = Symbol()
 export const filteredFiles = Symbol()
 
-export async function rebuildTags(app: App) {
+export async function rebuildTags() {
   tags.clear()
 
   for (const file of app.vault.getFiles()) {
@@ -27,7 +27,7 @@ export async function rebuildTags(app: App) {
 
     let fileTags: string[] | null = null
     if (file.extension === 'canvas') {
-      fileTags = await processCanvas(app, file)
+      fileTags = await processCanvas(file)
     } else {
       fileTags = getAllTags(cache)
     }
@@ -76,10 +76,7 @@ function upsert(key: string | symbol, file: TFile) {
  * This function will read the content of a canvas, then iterate through all nodes of type 'text',
  * extracting any tags found in its text content.
  */
-async function processCanvas(
-  app: App,
-  canvas: TFile,
-): Promise<MaybePseudoTag[]> {
+async function processCanvas(canvas: TFile): Promise<MaybePseudoTag[]> {
   const tags: string[] = []
   try {
     const content = await app.vault.cachedRead(canvas)

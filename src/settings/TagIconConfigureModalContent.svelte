@@ -1,15 +1,10 @@
 <script lang="ts">
-  import { type App } from 'obsidian'
   import { IconSuggest } from '$lib/suggest/IconSuggest'
   import RegisteredIcon from '$lib/obsidian/icon/RegisteredIcon.svelte'
   import SettingItem from '$lib/obsidian/setting-group/SettingItem.svelte'
   import { settings } from '$state/settings.svelte'
 
-  let {
-    app,
-    tag,
-    onclose,
-  }: { app: App; tag: MaybePseudoTag; onclose: () => void } = $props()
+  let { tag, onclose }: { tag: MaybePseudoTag; onclose: () => void } = $props()
 
   const current = $derived(settings.current.icons[tag])
   const lastTagPart = $derived(tag.split('/').last()?.replace('#', ''))

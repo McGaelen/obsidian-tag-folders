@@ -11,11 +11,8 @@
   } from '$state/tags.svelte'
   import { selectedTag } from '$state/selectedTag.svelte'
   import TreeItemNavFile from '$lib/obsidian/file-tree-list/TreeItemNavFile.svelte'
-  import { getContext } from 'svelte'
-  import type { App, TFile } from 'obsidian'
+  import type { TFile } from 'obsidian'
   import { Asterisk, Inbox, Funnel } from '@lucide/svelte'
-
-  const app: App = getContext('app')
 
   const tagTree = $derived(
     tags

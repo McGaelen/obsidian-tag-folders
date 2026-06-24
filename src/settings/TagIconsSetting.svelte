@@ -9,8 +9,6 @@
   import TagIconDisplay from '$lib/TagIconDisplay.svelte'
   import { TagIconConfigureModal } from './TagIconConfigureModal'
 
-  let { app }: { app: App } = $props()
-
   let inputEl: HTMLInputElement
   let newTag: MaybePseudoTag = $state('')
 
@@ -51,7 +49,7 @@
         <button
           class="h-[24px]!"
           aria-label="Delete"
-          onclick={() => new TagIconConfigureModal(app, tag).open()}
+          onclick={() => new TagIconConfigureModal(tag).open()}
         >
           Configure
         </button>

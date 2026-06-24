@@ -1,14 +1,12 @@
 <script lang="ts">
   import { settings } from '$state/settings.svelte'
   import { X } from '@lucide/svelte'
-  import { type App, displayTooltip } from 'obsidian'
+  import { displayTooltip } from 'obsidian'
   import { FolderSuggest } from '$lib/suggest/FolderSuggest'
   import SettingItem from '$lib/obsidian/setting-group/SettingItem.svelte'
   import { flushSync } from 'svelte'
   import SettingGroup from '$lib/obsidian/setting-group/SettingGroup.svelte'
   import { rebuildTags } from '$state/tags.svelte'
-
-  let { app }: { app: App } = $props()
 
   let inputEl: HTMLInputElement
   let newExcl = $state('')
@@ -26,12 +24,12 @@
       inputEl.focus()
     }
 
-    rebuildTags(app)
+    rebuildTags()
   }
 
   function removeExcl(excl: string) {
     settings.current.exclusions.remove(excl)
-    rebuildTags(app)
+    rebuildTags()
   }
 </script>
 

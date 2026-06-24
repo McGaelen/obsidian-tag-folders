@@ -13,3 +13,9 @@ interface TagFoldersSettings {
   exclusions: string[]
   icons: Record<MaybePseudoTag, TagIcon>
 }
+
+interface Window {
+  app: import('obsidian').App
+}
+
+declare const app: import('obsidian').App

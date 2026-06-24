@@ -1,12 +1,12 @@
 import TagFoldersPlugin from '../main.svelte.js'
-import { App, PluginSettingTab } from 'obsidian'
+import { PluginSettingTab } from 'obsidian'
 import { mount, unmount } from 'svelte'
 import TfSettingTabContent from './TFSettingTabContent.svelte'
 
 export class TFSettingTab extends PluginSettingTab {
   #instance?: ReturnType<typeof mount>
 
-  constructor(app: App, plugin: TagFoldersPlugin) {
+  constructor(plugin: TagFoldersPlugin) {
     super(app, plugin)
   }
 
@@ -17,7 +17,6 @@ export class TFSettingTab extends PluginSettingTab {
 
     this.#instance = mount(TfSettingTabContent, {
       target: containerEl,
-      props: { app: this.app },
     })
   }
 
