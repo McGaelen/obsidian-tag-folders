@@ -35,7 +35,7 @@ export function initSettings(
   _settings = temp
 
   $effect(() => {
-    console.log('save called', $state.snapshot(_settings))
+    console.log('[TagFolders] Saving settings', $state.snapshot(_settings))
     saveDataFn($state.snapshot(_settings))
   })
 }
