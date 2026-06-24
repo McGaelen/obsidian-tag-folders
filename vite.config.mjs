@@ -22,7 +22,7 @@ export default defineConfig({
     wasm(),
     // topLevelAwait(),
     tailwindcss(),
-    svelte(),
+    svelte({ compilerOptions: { dev: !prod } }),
     {
       name: 'copy-to-obsidian-vault',
       apply: 'build',

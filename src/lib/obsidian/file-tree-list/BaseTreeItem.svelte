@@ -36,7 +36,7 @@
     class={[
       'tree-item-self is-clickable items-center!',
       isFolder ? 'nav-folder-title mod-collapsible' : 'nav-file-title tappable',
-      {'is-active': isActive},
+      { 'is-active': isActive },
     ]}
     style="margin-inline-start: {margin}px !important; padding-inline-start: {padding}px !important;"
     {onclick}

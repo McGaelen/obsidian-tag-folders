@@ -3,10 +3,7 @@
   import RegisteredIcon from '$lib/obsidian/icon/RegisteredIcon.svelte'
   import { type ClassValue } from 'svelte/elements'
 
-  const {
-    icon,
-    class: clazz,
-  }: { icon: TagIcon, class?: ClassValue } = $props()
+  const { icon, class: clazz }: { icon: TagIcon; class?: ClassValue } = $props()
 </script>
 
 <div class={clazz}>

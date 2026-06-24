@@ -5,7 +5,11 @@
   import SettingItem from '$lib/obsidian/setting-group/SettingItem.svelte'
   import { settings } from '$state/settings.svelte'
 
-  let { app, tag, onclose }: { app: App; tag: MaybePseudoTag, onclose: () => void } = $props()
+  let {
+    app,
+    tag,
+    onclose,
+  }: { app: App; tag: MaybePseudoTag; onclose: () => void } = $props()
 
   const current = $derived(settings.current.icons[tag])
   const lastTagPart = $derived(tag.split('/').last()?.replace('#', ''))

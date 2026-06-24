@@ -19,7 +19,7 @@
       "$lib": ["./src/lib"],
       "$lib/*": ["./src/lib/*"],
       "$state": ["./src/state"],
-      "$state/*": ["./src/state/*"],
+      "$state/*": ["./src/state/*"]
     },
     "types": ["vite/client"]
   },

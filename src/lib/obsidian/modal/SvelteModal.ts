@@ -1,9 +1,4 @@
-import {
-  type Component,
-  type ComponentProps,
-  mount,
-  unmount,
-} from 'svelte'
+import { type Component, type ComponentProps, mount, unmount } from 'svelte'
 import { type App, Modal } from 'obsidian'
 
 export class SvelteModal<T extends Component> extends Modal {
@@ -11,7 +6,11 @@ export class SvelteModal<T extends Component> extends Modal {
   #props?: ComponentProps<T>
   #instance?: ReturnType<typeof mount>
 
-  constructor(app: App, p_component: T, p_props?: ComponentProps<T> & { onclose: () => void }) {
+  constructor(
+    app: App,
+    p_component: T,
+    p_props?: ComponentProps<T> & { onclose: () => void },
+  ) {
     super(app)
     this.#component = p_component
     this.#props = p_props

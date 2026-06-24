@@ -3,7 +3,12 @@
   import Toolbar from './Toolbar.svelte'
   import TagTree from './TagTree.svelte'
   import { set } from 'lodash-es'
-  import { taggedFiles, filteredFiles, tags, untaggedFiles } from '$state/tags.svelte'
+  import {
+    taggedFiles,
+    filteredFiles,
+    tags,
+    untaggedFiles,
+  } from '$state/tags.svelte'
   import { selectedTag } from '$state/selectedTag.svelte'
   import TreeItemNavFile from '$lib/obsidian/file-tree-list/TreeItemNavFile.svelte'
   import { getContext } from 'svelte'
@@ -32,8 +37,8 @@
     // Apply sorting
     // TODO: support more sorting options
     // noinspection UnnecessaryLocalVariableJS
-    const sorted = Array.from(set).toSorted((a, b) =>
-      b.stat.mtime - a.stat.mtime,
+    const sorted = Array.from(set).toSorted(
+      (a, b) => b.stat.mtime - a.stat.mtime,
     )
 
     return sorted
@@ -49,7 +54,6 @@
       app.workspace.offref(ref)
     }
   })
-
 </script>
 
 <Toolbar />

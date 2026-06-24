@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { Snippet } from 'svelte'
 
-  let {heading, children}: {heading?: string; children?: Snippet} = $props()
+  let { heading, children }: { heading?: string; children?: Snippet } = $props()
 </script>
 
 <div class="setting-group">
