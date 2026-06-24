@@ -1,9 +1,6 @@
-import { Plugin, type WorkspaceLeaf } from 'obsidian'
+import { Plugin, TFile, type WorkspaceLeaf } from 'obsidian'
 import './styles.css'
-import {
-  TFNavView,
-  VIEW_TYPE_TAG_FOLDERS,
-} from './views/TFNavView/TFNavView'
+import { TFNavView, VIEW_TYPE_TAG_FOLDERS } from './views/TFNavView/TFNavView'
 import { TFSettingTab } from './settings/TFSettingTab'
 import { rebuildTags } from '$state/tags.svelte'
 import { initSettings } from '$state/settings.svelte'
@@ -26,7 +23,7 @@ export default class TagFoldersPlugin extends Plugin {
 
       this.app.workspace.onLayoutReady(async () => {
         // Initialize the tags store
-        this.#initTags()
+        await this.#initTags()
 
         // TODO: this should probably not happen every single time if the user deliberately closed it.
         // TODO: add some kind of state to remember if it's closed or not, then add a command to open it back up from the palette.
@@ -40,8 +37,8 @@ export default class TagFoldersPlugin extends Plugin {
     this.app.workspace.detachLeavesOfType(VIEW_TYPE_TAG_FOLDERS)
   }
 
-  #initTags() {
-    rebuildTags(this.app)
+  async #initTags() {
+    await rebuildTags(this.app)
 
     // TODO: these event handlers should be optimized to only update the file provided
     this.app.vault.on('create', _file => {
@@ -52,9 +49,11 @@ export default class TagFoldersPlugin extends Plugin {
       // console.log('rename', _file)
       rebuildTags(this.app)
     })
+
     // We can't use app.value.on('modify'), because we need to wait for obsidian's cache to refresh,
     // which is how we are able to read tags without manually parsing every file.
     // Therefore, we subscribe to the metadataCache 'changed' event instead.
+    // NOTE: This does not work for canvas files!
     this.app.metadataCache.on('changed', (_file, _data, _cache) => {
       // console.log('changed', _file, _data, _cache)
       rebuildTags(this.app)
@@ -62,6 +61,15 @@ export default class TagFoldersPlugin extends Plugin {
     this.app.metadataCache.on('deleted', (_file, _prevCache) => {
       // console.log('deleted', _file, _prevCache)
       rebuildTags(this.app)
+    })
+
+    // For canvas files, since they don't have any data stored in the cache (they only are a {}),
+    // we have to use the vault's on('modify') event for those only.
+    this.app.vault.on('modify', file => {
+      if (file instanceof TFile && file.extension === 'canvas') {
+        // console.log('modify', file)
+        rebuildTags(this.app)
+      }
     })
   }
 
