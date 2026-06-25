@@ -1,5 +1,4 @@
 <script lang="ts">
-  import type { TagIcon } from '$state/settings.svelte'
   import RegisteredIcon from '$lib/obsidian/icon/RegisteredIcon.svelte'
   import { type ClassValue } from 'svelte/elements'
 
