@@ -117,6 +117,7 @@ export class Tags {
    */
   #collectTags(text: string): MaybePseudoTag[] {
     const tags: MaybePseudoTag[] = []
+    const validChar = /[\w|/|-]/
 
     // this means "are we currently inside a tag during iteration"
     let isInTag = false
@@ -132,8 +133,8 @@ export class Tags {
 
       if (isInTag) {
         // If we were already in a tag, we have to check to see if we've exited it.
-        // Check to see if `c` is an alphanumeric character or a forward-slash. If it's not, we're no longer in a tag.
-        isInTag = !!c.match(/[\w|/]/)
+        // Check to see if `c` is an alphanumeric character, forward-slash, or dash. If it's not, we're no longer in a tag.
+        isInTag = !!c.match(validChar)
         // If `isInTag` got flipped, that means we exited a tag on this iteration...
         // OR, it means that this is the last character in the string.
         // Note that `isInTag` can still be true when the last character of the tag is also the last character of the string.
@@ -145,7 +146,9 @@ export class Tags {
         // prettier-ignore
         isInTag = !!(
           c === '#' &&
-          (i === 0 || text[i-1].match(/\s/))
+          (i === 0 || text[i-1].match(/\s/)) &&
+          i+1 !== text.length &&
+          text[i+1].match(validChar)
         )
       }
 
