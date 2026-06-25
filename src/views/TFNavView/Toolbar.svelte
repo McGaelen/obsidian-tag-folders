@@ -3,12 +3,24 @@
   import NavButtonsContainer from '$lib/obsidian/file-tree-header/NavButtonsContainer.svelte'
   import NavActionButton from '$lib/obsidian/file-tree-header/NavActionButton.svelte'
   import { SquarePen } from '@lucide/svelte'
-  import { getContext } from 'svelte'
-  import { type App, Platform } from 'obsidian'
+  import { Platform, TFile } from 'obsidian'
+  import { selectedTag } from '$state/selectedTag.svelte'
 
-  const app = getContext<App>('app')
+  async function createFile() {
+    const currentTag: string =
+      typeof selectedTag.current !== 'symbol' && selectedTag.current !== null
+        ? selectedTag.current
+        : ''
 
-  function createFile() {
+    // Set up this listener before we actually fire the new-file command,
+    // so once it's created, we immediately add the currently selected tag to the file.
+    const ref = app.vault.on('create', file => {
+      if (file instanceof TFile) {
+        app.vault.modify(file, currentTag)
+        app.vault.offref(ref)
+      }
+    })
+
     // @ts-expect-error This is NOT in the public API!!!
     app.commands.executeCommandById('file-explorer:new-file')
   }
