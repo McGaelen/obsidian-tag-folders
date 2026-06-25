@@ -4,7 +4,7 @@ import { SortOrder } from '$lib/enums/SortOrder'
 export const DEFAULT_SETTINGS: TagFoldersSettings = {
   exclusions: ['Attachments'],
   icons: {},
-  sortOrder: SortOrder.filename_asc,
+  sortOrder: SortOrder.filename_desc,
   selectedTag: null,
 }
 
