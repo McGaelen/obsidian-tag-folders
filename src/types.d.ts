@@ -12,8 +12,10 @@ interface TagIcon {
 interface TagFoldersSettings {
   exclusions: string[]
   icons: Record<MaybePseudoTag, TagIcon>
+  sortOrder: import('$lib/enums/SortOrder').SortOrder,
 }
 
+// noinspection JSUnusedGlobalSymbols
 interface Window {
   app: import('obsidian').App
 }

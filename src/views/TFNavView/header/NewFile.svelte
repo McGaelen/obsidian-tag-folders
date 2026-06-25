@@ -1,9 +1,7 @@
 <script lang="ts">
-  import NavHeader from '$lib/obsidian/file-tree-header/NavHeader.svelte'
-  import NavButtonsContainer from '$lib/obsidian/file-tree-header/NavButtonsContainer.svelte'
+  import { Platform, TFile } from 'obsidian'
   import NavActionButton from '$lib/obsidian/file-tree-header/NavActionButton.svelte'
   import { SquarePen } from '@lucide/svelte'
-  import { Platform, TFile } from 'obsidian'
   import { selectedTag } from '$state/selectedTag.svelte'
 
   async function createFile() {
@@ -26,10 +24,6 @@
   }
 </script>
 
-<NavHeader>
-  <NavButtonsContainer>
-    <NavActionButton onclick={createFile}>
-      <SquarePen size={Platform.isMobile ? 24 : 18} />
-    </NavActionButton>
-  </NavButtonsContainer>
-</NavHeader>
+<NavActionButton onclick={createFile}>
+  <SquarePen size={Platform.isMobile ? 24 : 18} />
+</NavActionButton>

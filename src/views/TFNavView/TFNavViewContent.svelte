@@ -1,6 +1,6 @@
 <script lang="ts">
   import NavFilesContainer from '$lib/obsidian/file-tree-list/NavFilesContainer.svelte'
-  import Toolbar from './Toolbar.svelte'
+  import TFNavHeader from './header/TFNavHeader.svelte'
   import TagTree from './TagTree.svelte'
   import { set } from 'lodash-es'
   import { Tags, tags } from '$state/tags.svelte'
@@ -8,6 +8,8 @@
   import TreeItemNavFile from '$lib/obsidian/file-tree-list/TreeItemNavFile.svelte'
   import type { TFile } from 'obsidian'
   import { Asterisk, Inbox, Funnel } from '@lucide/svelte'
+  import { settings } from '$state/settings.svelte'
+  import { SortOrder } from '$lib/enums/SortOrder'
 
   const tagTree = $derived(
     tags.current
@@ -29,11 +31,24 @@
     // Apply sorting
     // TODO: support more sorting options
     // noinspection UnnecessaryLocalVariableJS
-    const sorted = Array.from(set).toSorted(
-      (a, b) => b.stat.mtime - a.stat.mtime,
-    )
+    const array = Array.from(set)
 
-    return sorted
+    switch (settings.current.sortOrder) {
+      case SortOrder.filename_desc:
+        return array.toSorted((a, b) => a.basename.localeCompare(b.basename))
+      case SortOrder.filename_asc:
+        return array.toSorted((a, b) => b.basename.localeCompare(a.basename))
+      case SortOrder.mtime_desc:
+        return array.toSorted((a, b) => b.stat.mtime - a.stat.mtime)
+      case SortOrder.mtime_asc:
+        return array.toSorted((a, b) => a.stat.mtime - b.stat.mtime)
+      case SortOrder.ctime_desc:
+        return array.toSorted((a, b) => b.stat.ctime - a.stat.ctime)
+      case SortOrder.ctime_asc:
+        return array.toSorted((a, b) => a.stat.ctime - b.stat.ctime)
+      default:
+        throw settings.current.sortOrder satisfies never
+    }
   })
 
   let activeFile: TFile | null = $state(null)
@@ -48,7 +63,7 @@
   })
 </script>
 
-<Toolbar />
+<TFNavHeader />
 
 <NavFilesContainer>
   <TreeItemNavFile

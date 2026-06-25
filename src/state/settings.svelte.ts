@@ -1,8 +1,10 @@
 import type TagFoldersPlugin from '../main.svelte.js'
+import { SortOrder } from '$lib/enums/SortOrder'
 
 export const DEFAULT_SETTINGS: TagFoldersSettings = {
   exclusions: ['Attachments'],
   icons: {},
+  sortOrder: SortOrder.filename_asc
 }
 
 let _settings = $state(DEFAULT_SETTINGS)
@@ -26,10 +28,13 @@ export function initSettings(
     temp = DEFAULT_SETTINGS
   }
   if (!temp.exclusions) {
-    temp.exclusions = []
+    temp.exclusions = DEFAULT_SETTINGS.exclusions
   }
   if (!temp.icons) {
-    temp.icons = {}
+    temp.icons = DEFAULT_SETTINGS.icons
+  }
+  if (!temp.sortOrder) {
+    temp.sortOrder = DEFAULT_SETTINGS.sortOrder
   }
 
   _settings = temp
