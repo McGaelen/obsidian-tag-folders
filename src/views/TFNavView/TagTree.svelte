@@ -37,11 +37,13 @@
     {#snippet label()}
       {@const icon = settings.current.icons[maybePseudoTag]}
       <div class="flex items-center">
-        {#if icon}
-          <TagIconDisplay {icon} />
-        {:else}
-          <Hash size={16} class="text-(--nav-tag-color) mr-0.5 min-w-[16px]" />
-        {/if}
+        <div class="w-[20px]">
+          {#if icon}
+            <TagIconDisplay {icon} />
+          {:else}
+            <Hash size={16} class="text-(--nav-tag-color) min-w-[16px]" />
+          {/if}
+        </div>
         {subTag}
       </div>
     {/snippet}
