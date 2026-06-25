@@ -4,7 +4,6 @@
   import { Hash } from '@lucide/svelte'
   import TreeItemNavFile from '$lib/obsidian/file-tree-list/TreeItemNavFile.svelte'
   import { tags } from '$state/tags.svelte'
-  import { selectedTag } from '$state/selectedTag.svelte'
   import { settings } from '$state/settings.svelte'
   import TagIconDisplay from '$lib/TagIconDisplay.svelte'
 
@@ -31,8 +30,8 @@
 
   <TreeItemComponent
     {depth}
-    isActive={selectedTag.current === maybePseudoTag}
-    onclick={() => (selectedTag.current = maybePseudoTag)}
+    isActive={settings.current.selectedTag === maybePseudoTag}
+    onclick={() => (settings.current.selectedTag = maybePseudoTag)}
   >
     {#snippet label()}
       {@const icon = settings.current.icons[maybePseudoTag]}

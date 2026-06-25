@@ -4,7 +4,8 @@ import { SortOrder } from '$lib/enums/SortOrder'
 export const DEFAULT_SETTINGS: TagFoldersSettings = {
   exclusions: ['Attachments'],
   icons: {},
-  sortOrder: SortOrder.filename_asc
+  sortOrder: SortOrder.filename_asc,
+  selectedTag: null,
 }
 
 let _settings = $state(DEFAULT_SETTINGS)
@@ -21,23 +22,10 @@ export function initSettings(
   initial: TagFoldersSettings | null,
   saveDataFn: TagFoldersPlugin['saveData'],
 ) {
-  // Validation
-  let temp = initial
-
-  if (!temp) {
-    temp = DEFAULT_SETTINGS
+  _settings = {
+    ...DEFAULT_SETTINGS,
+    ...initial,
   }
-  if (!temp.exclusions) {
-    temp.exclusions = DEFAULT_SETTINGS.exclusions
-  }
-  if (!temp.icons) {
-    temp.icons = DEFAULT_SETTINGS.icons
-  }
-  if (!temp.sortOrder) {
-    temp.sortOrder = DEFAULT_SETTINGS.sortOrder
-  }
-
-  _settings = temp
 
   $effect(() => {
     console.log('[TagFolders] Saving settings', $state.snapshot(_settings))

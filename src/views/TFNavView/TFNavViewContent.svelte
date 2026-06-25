@@ -4,7 +4,6 @@
   import TagTree from './TagTree.svelte'
   import { set } from 'lodash-es'
   import { Tags, tags } from '$state/tags.svelte'
-  import { selectedTag } from '$state/selectedTag.svelte'
   import TreeItemNavFile from '$lib/obsidian/file-tree-list/TreeItemNavFile.svelte'
   import type { TFile } from 'obsidian'
   import { Asterisk, Inbox, Funnel } from '@lucide/svelte'
@@ -14,7 +13,7 @@
   const tagTree = $derived(
     tags.current
       .keys()
-      .filter(k => typeof k !== 'symbol')
+      .filter(k => typeof k !== 'number')
       .reduce((acc, current) => {
         // slice(1) will remove the leading slash, so it isn't replaced with a "."
         const objectPath = current.slice(1).replaceAll('/', '.')
@@ -23,9 +22,9 @@
   )
 
   const files: TFile[] = $derived.by(() => {
-    if (selectedTag.current === null) return []
+    if (settings.current.selectedTag === null) return []
 
-    const set = tags.current.get(selectedTag.current)
+    const set = tags.current.get(settings.current.selectedTag)
     if (!set) return []
 
     // Apply sorting
@@ -67,8 +66,8 @@
 
 <NavFilesContainer>
   <TreeItemNavFile
-    onclick={() => (selectedTag.current = Tags.taggedFiles)}
-    isActive={selectedTag.current === Tags.taggedFiles}
+    onclick={() => (settings.current.selectedTag = Tags.taggedFiles)}
+    isActive={settings.current.selectedTag === Tags.taggedFiles}
   >
     {#snippet label()}
       <div class="flex items-center">
@@ -84,8 +83,8 @@
   </TreeItemNavFile>
 
   <TreeItemNavFile
-    onclick={() => (selectedTag.current = Tags.untaggedFiles)}
-    isActive={selectedTag.current === Tags.untaggedFiles}
+    onclick={() => (settings.current.selectedTag = Tags.untaggedFiles)}
+    isActive={settings.current.selectedTag === Tags.untaggedFiles}
   >
     {#snippet label()}
       <div class="flex items-center">
@@ -101,8 +100,8 @@
   </TreeItemNavFile>
 
   <TreeItemNavFile
-    onclick={() => (selectedTag.current = Tags.filteredFiles)}
-    isActive={selectedTag.current === Tags.filteredFiles}
+    onclick={() => (settings.current.selectedTag = Tags.filteredFiles)}
+    isActive={settings.current.selectedTag === Tags.filteredFiles}
   >
     {#snippet label()}
       <div class="flex items-center">

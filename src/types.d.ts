@@ -4,6 +4,8 @@
  */
 type MaybePseudoTag = string
 
+type MetaTag = MaybePseudoTag | number
+
 interface TagIcon {
   iconId?: string
   raw?: string
@@ -13,6 +15,7 @@ interface TagFoldersSettings {
   exclusions: string[]
   icons: Record<MaybePseudoTag, TagIcon>
   sortOrder: import('$lib/enums/SortOrder').SortOrder,
+  selectedTag: MetaTag | null
 }
 
 // noinspection JSUnusedGlobalSymbols

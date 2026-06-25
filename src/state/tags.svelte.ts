@@ -4,11 +4,11 @@ import { settings } from '$state/settings.svelte'
 import type { CanvasData } from 'obsidian/canvas'
 
 export class Tags {
-  static taggedFiles = Symbol()
-  static untaggedFiles = Symbol()
-  static filteredFiles = Symbol()
+  static taggedFiles = 0
+  static untaggedFiles = 1
+  static filteredFiles = 2
 
-  #current: SvelteMap<MaybePseudoTag | symbol, SvelteSet<TFile>>
+  #current: SvelteMap<MetaTag, SvelteSet<TFile>>
 
   constructor() {
     this.#current = new SvelteMap()
@@ -65,7 +65,7 @@ export class Tags {
     }
   }
 
-  #upsert(key: string | symbol, file: TFile) {
+  #upsert(key: MetaTag, file: TFile) {
     const fileSet = this.#current.get(key)
     if (fileSet) {
       fileSet.add(file)

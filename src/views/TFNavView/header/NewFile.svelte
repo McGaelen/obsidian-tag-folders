@@ -2,12 +2,14 @@
   import { Platform, TFile } from 'obsidian'
   import NavActionButton from '$lib/obsidian/file-tree-header/NavActionButton.svelte'
   import { SquarePen } from '@lucide/svelte'
-  import { selectedTag } from '$state/selectedTag.svelte'
+  import { settings } from '$state/settings.svelte'
 
   async function createFile() {
+    const { selectedTag } = settings.current
+
     const currentTag: string =
-      typeof selectedTag.current !== 'symbol' && selectedTag.current !== null
-        ? selectedTag.current
+      typeof selectedTag !== 'number' && selectedTag !== null
+        ? selectedTag
         : ''
 
     // Set up this listener before we actually fire the new-file command,
